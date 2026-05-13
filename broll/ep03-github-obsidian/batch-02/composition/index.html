@@ -1,0 +1,1206 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #0b1020;
+        font-family:
+          "Noto Sans TC",
+          "Microsoft JhengHei",
+          "PingFang TC",
+          system-ui,
+          sans-serif;
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        color: #ffffff;
+        background:
+          radial-gradient(circle at 18% 18%, rgba(56, 189, 248, 0.26), transparent 28%),
+          radial-gradient(circle at 84% 74%, rgba(168, 85, 247, 0.28), transparent 30%),
+          linear-gradient(135deg, #0b1020 0%, #111027 48%, #15171f 100%);
+      }
+
+      #grid,
+      #scan,
+      #brand-bug,
+      #frame-safe,
+      #transition-wipe {
+        position: absolute;
+        pointer-events: none;
+      }
+
+      #grid {
+        inset: 0;
+        z-index: 1;
+        opacity: 0.22;
+        background-image:
+          linear-gradient(rgba(56, 189, 248, 0.2) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(56, 189, 248, 0.2) 1px, transparent 1px);
+        background-size: 72px 72px;
+      }
+
+      #scan {
+        inset: 0;
+        z-index: 2;
+        opacity: 0.18;
+        background: linear-gradient(
+          180deg,
+          transparent 0%,
+          rgba(255, 255, 255, 0.08) 50%,
+          transparent 100%
+        );
+        height: 180px;
+      }
+
+      #brand-bug {
+        top: 72px;
+        left: 120px;
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .bug-mark {
+        width: 52px;
+        height: 52px;
+        display: grid;
+        place-items: center;
+        border: 2px solid #38bdf8;
+        color: #38bdf8;
+        background: rgba(56, 189, 248, 0.1);
+        box-shadow: 0 0 28px rgba(56, 189, 248, 0.35);
+        font-size: 24px;
+        font-weight: 950;
+      }
+
+      #brand-bug span {
+        color: #ffffff;
+        font-size: 62px;
+        line-height: 1;
+        font-weight: 950;
+        letter-spacing: 0;
+        text-shadow: 0 0 28px rgba(56, 189, 248, 0.34);
+      }
+
+      #frame-safe {
+        z-index: 4;
+        inset: 108px 192px;
+        border: 1px solid rgba(56, 189, 248, 0.16);
+      }
+
+      .scene {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        overflow: hidden;
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      #s1 {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .scene-content {
+        position: absolute;
+        inset: 108px 192px 84px;
+        display: grid;
+        gap: 44px;
+        z-index: 12;
+      }
+
+      .label {
+        color: #a3e635;
+        font-family: "JetBrains Mono", "Consolas", monospace;
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: 0.03em;
+      }
+
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+
+      .headline {
+        color: #ffffff;
+        font-size: 86px;
+        line-height: 1.06;
+        font-weight: 950;
+        letter-spacing: 0;
+      }
+
+      .headline .accent-blue {
+        color: #38bdf8;
+        text-shadow: 0 0 30px rgba(56, 189, 248, 0.45);
+      }
+
+      .headline .accent-yellow {
+        color: #facc15;
+        text-shadow: 0 0 30px rgba(250, 204, 21, 0.38);
+      }
+
+      .headline .accent-green {
+        color: #a3e635;
+        text-shadow: 0 0 28px rgba(163, 230, 53, 0.4);
+      }
+
+      .subline {
+        color: #e5e7eb;
+        font-size: 30px;
+        line-height: 1.45;
+        font-weight: 700;
+      }
+
+      .panel {
+        border: 1px solid rgba(56, 189, 248, 0.25);
+        background: rgba(11, 16, 32, 0.78);
+        box-shadow:
+          0 24px 80px rgba(0, 0, 0, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      .mono {
+        font-family: "JetBrains Mono", "Consolas", monospace;
+      }
+
+      .mini {
+        color: #94a3b8;
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .node-title {
+        color: #ffffff;
+        font-size: 34px;
+        font-weight: 950;
+      }
+
+      .node-small {
+        color: #a3e635;
+        font-size: 18px;
+        font-weight: 850;
+        letter-spacing: 0.04em;
+      }
+
+      /* ============================================================
+         SCENE 1 – BROLL_06: New Project Workflow
+         ============================================================ */
+
+      #s1 .scene-content {
+        grid-template-columns: 520px 1fr;
+        align-items: center;
+      }
+
+      .app-panel {
+        padding: 36px;
+        height: 580px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .app-chrome {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding-bottom: 22px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .dot {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+      }
+
+      .dot-r {
+        background: #fb7185;
+      }
+
+      .dot-y {
+        background: #facc15;
+      }
+
+      .dot-g {
+        background: #a3e635;
+      }
+
+      .app-title {
+        color: #e5e7eb;
+        font-size: 28px;
+        font-weight: 800;
+        margin-left: 8px;
+      }
+
+      .app-section-label {
+        color: #94a3b8;
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        font-family: "JetBrains Mono", "Consolas", monospace;
+      }
+
+      .app-btn {
+        padding: 22px 28px;
+        border: 2px solid rgba(56, 189, 248, 0.2);
+        background: rgba(11, 16, 32, 0.6);
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+
+      .app-btn.active {
+        border-color: #38bdf8;
+        background: rgba(56, 189, 248, 0.08);
+        box-shadow: 0 0 32px rgba(56, 189, 248, 0.2);
+      }
+
+      .app-btn-icon {
+        width: 44px;
+        height: 44px;
+        display: grid;
+        place-items: center;
+        color: #38bdf8;
+        font-size: 28px;
+        font-weight: 950;
+      }
+
+      .app-btn.active .app-btn-icon {
+        text-shadow: 0 0 16px rgba(56, 189, 248, 0.6);
+      }
+
+      .app-btn-text {
+        color: #ffffff;
+        font-size: 32px;
+        font-weight: 850;
+      }
+
+      .app-btn.dim .app-btn-text {
+        color: #64748b;
+      }
+
+      .app-btn.dim .app-btn-icon {
+        color: #94a3b8;
+      }
+
+      .input-row {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        margin-top: auto;
+      }
+
+      .input-label {
+        color: #94a3b8;
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .input-field {
+        padding: 18px 24px;
+        font-size: 32px;
+        font-weight: 950;
+        color: #a3e635;
+        font-family: "JetBrains Mono", "Consolas", monospace;
+        background: rgba(163, 230, 53, 0.06);
+        border: 1px solid rgba(163, 230, 53, 0.28);
+        display: flex;
+        align-items: center;
+      }
+
+      #s6-cursor {
+        display: inline-block;
+        width: 3px;
+        height: 36px;
+        background: #a3e635;
+        vertical-align: middle;
+        margin-left: 4px;
+        box-shadow: 0 0 8px rgba(163, 230, 53, 0.6);
+      }
+
+      /* ============================================================
+         SCENE 2 – BROLL_07: Markdown Drag into Codex
+         ============================================================ */
+
+      #s2 .scene-content {
+        align-content: start;
+      }
+
+      .drag-stage {
+        display: grid;
+        grid-template-columns: 1fr 100px 1fr;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .drag-col {
+        display: flex;
+        justify-content: center;
+      }
+
+      #md-card {
+        width: 430px;
+        height: 320px;
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        border: 1px solid rgba(163, 230, 53, 0.38);
+        background: rgba(163, 230, 53, 0.07);
+        box-shadow:
+          0 24px 80px rgba(0, 0, 0, 0.35),
+          0 0 30px rgba(163, 230, 53, 0.12),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      .md-filename {
+        font-size: 26px;
+        font-weight: 950;
+        color: #a3e635;
+        font-family: "JetBrains Mono", "Consolas", monospace;
+      }
+
+      .md-line {
+        height: 14px;
+        background: linear-gradient(90deg, rgba(56, 189, 248, 0.6), rgba(56, 189, 248, 0.08));
+      }
+
+      #drag-arrow {
+        color: #38bdf8;
+        font-size: 72px;
+        font-weight: 950;
+        text-align: center;
+        text-shadow: 0 0 24px rgba(56, 189, 248, 0.55);
+      }
+
+      #chat-window {
+        height: 380px;
+        padding: 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .chat-top {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding-bottom: 18px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .chat-label {
+        color: #94a3b8;
+        font-size: 22px;
+        font-weight: 700;
+        margin-left: 8px;
+      }
+
+      #drop-zone {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        border: 2px dashed rgba(56, 189, 248, 0.4);
+        background: rgba(56, 189, 248, 0.05);
+        box-shadow: 0 0 32px rgba(56, 189, 248, 0.12) inset;
+      }
+
+      .drop-label {
+        color: #38bdf8;
+        font-size: 26px;
+        font-weight: 800;
+      }
+
+      #prompt-block {
+        padding: 18px 24px;
+        border-left: 6px solid #38bdf8;
+        background: rgba(56, 189, 248, 0.1);
+        color: #e5e7eb;
+        font-size: 26px;
+        font-weight: 800;
+        line-height: 1.4;
+      }
+
+      /* ============================================================
+         SCENE 3 – BROLL_08: GitHub CLI + Obsidian MCP Split
+         ============================================================ */
+
+      #s3 .scene-content {
+        align-content: start;
+      }
+
+      .split-stage {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        height: 440px;
+      }
+
+      .branch-panel {
+        flex: 1;
+        height: 400px;
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+      }
+
+      .branch-tag {
+        display: inline-block;
+        padding: 6px 16px;
+        font-size: 18px;
+        font-weight: 900;
+        font-family: "JetBrains Mono", "Consolas", monospace;
+        letter-spacing: 0.06em;
+        align-self: flex-start;
+      }
+
+      .github-tag {
+        color: #0b1020;
+        background: #38bdf8;
+      }
+
+      .obsidian-tag {
+        color: #0b1020;
+        background: #a855f7;
+      }
+
+      .branch-title {
+        color: #ffffff;
+        font-size: 46px;
+        font-weight: 950;
+        line-height: 1.1;
+      }
+
+      .branch-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        color: #e5e7eb;
+        font-size: 28px;
+        font-weight: 700;
+      }
+
+      .branch-item::before {
+        content: "▸";
+        color: #38bdf8;
+        font-size: 24px;
+      }
+
+      .obsidian-panel {
+        border-color: rgba(168, 85, 247, 0.35);
+        box-shadow:
+          0 24px 80px rgba(0, 0, 0, 0.35),
+          0 0 40px rgba(168, 85, 247, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      .obsidian-branch .branch-item::before {
+        color: #a855f7;
+      }
+
+      .conn-seg {
+        width: 100px;
+        height: 4px;
+        flex-shrink: 0;
+      }
+
+      #conn-github {
+        background: linear-gradient(90deg, #38bdf8, rgba(56, 189, 248, 0.2));
+        box-shadow: 0 0 18px rgba(56, 189, 248, 0.45);
+      }
+
+      #conn-obsidian {
+        background: linear-gradient(90deg, rgba(168, 85, 247, 0.2), #a855f7);
+        box-shadow: 0 0 18px rgba(168, 85, 247, 0.45);
+      }
+
+      #hub-node {
+        width: 300px;
+        height: 300px;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        border: 2px solid rgba(56, 189, 248, 0.5);
+        background: rgba(17, 16, 39, 0.95);
+        box-shadow:
+          0 0 64px rgba(56, 189, 248, 0.3),
+          0 0 120px rgba(168, 85, 247, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      }
+
+      .hub-label {
+        color: #a3e635;
+        font-size: 20px;
+        font-weight: 850;
+        letter-spacing: 0.05em;
+        font-family: "JetBrains Mono", "Consolas", monospace;
+      }
+
+      .hub-title {
+        color: #ffffff;
+        font-size: 52px;
+        font-weight: 950;
+      }
+
+      /* ============================================================
+         SCENE 4 – BROLL_09: Human vs Codex Comparison
+         ============================================================ */
+
+      #s4 .scene-content {
+        align-content: start;
+      }
+
+      .comparison {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
+
+      .comp-col {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .col-header {
+        padding: 22px 32px;
+        font-size: 42px;
+        font-weight: 950;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .human-header {
+        color: #facc15;
+        background: rgba(250, 204, 21, 0.12);
+        border: 2px solid rgba(250, 204, 21, 0.35);
+        box-shadow: 0 0 36px rgba(250, 204, 21, 0.15);
+      }
+
+      .codex-header {
+        color: #a3e635;
+        background: rgba(163, 230, 53, 0.1);
+        border: 2px solid rgba(163, 230, 53, 0.35);
+        box-shadow: 0 0 36px rgba(163, 230, 53, 0.15);
+      }
+
+      .col-tag {
+        font-size: 20px;
+        font-weight: 850;
+        letter-spacing: 0.06em;
+        font-family: "JetBrains Mono", "Consolas", monospace;
+      }
+
+      .comp-row {
+        padding: 20px 32px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        min-height: 90px;
+      }
+
+      .comp-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 28px;
+        font-weight: 950;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+      }
+
+      .human-icon {
+        color: #facc15;
+        border: 2px solid rgba(250, 204, 21, 0.4);
+      }
+
+      .codex-icon {
+        color: #a3e635;
+        border: 2px solid rgba(163, 230, 53, 0.4);
+      }
+
+      .comp-text {
+        color: #ffffff;
+        font-size: 34px;
+        font-weight: 850;
+      }
+
+      /* ============================================================
+         SCENE 5 – BROLL_10: Obsidian MCP Vault Flow
+         ============================================================ */
+
+      #s5 .scene-content {
+        align-content: start;
+      }
+
+      .flow-stage {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+      }
+
+      .fn-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .flow-node {
+        width: 290px;
+        height: 250px;
+        padding: 28px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .flow-node-tag {
+        font-size: 18px;
+        font-weight: 850;
+        letter-spacing: 0.06em;
+        font-family: "JetBrains Mono", "Consolas", monospace;
+        color: #38bdf8;
+      }
+
+      .flow-node-title {
+        font-size: 32px;
+        font-weight: 950;
+        text-align: center;
+        line-height: 1.15;
+      }
+
+      .flow-arrow {
+        width: 56px;
+        height: 4px;
+        flex-shrink: 0;
+        background: linear-gradient(90deg, #38bdf8, #a3e635);
+        box-shadow: 0 0 16px rgba(56, 189, 248, 0.4);
+        position: relative;
+        align-self: center;
+      }
+
+      .flow-arrow::after {
+        content: "";
+        position: absolute;
+        right: -13px;
+        top: -7px;
+        border-left: 16px solid #a3e635;
+        border-top: 9px solid transparent;
+        border-bottom: 9px solid transparent;
+      }
+
+      .fn-normal {
+        border-color: rgba(56, 189, 248, 0.35);
+      }
+
+      .fn-warning {
+        border-color: rgba(250, 204, 21, 0.5);
+        box-shadow:
+          0 0 44px rgba(250, 204, 21, 0.2),
+          0 24px 80px rgba(0, 0, 0, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      .fn-warning .flow-node-tag {
+        color: #facc15;
+      }
+
+      .fn-warning .flow-node-title {
+        color: #facc15;
+      }
+
+      #warning-badge {
+        padding: 10px 20px;
+        color: #0b1020;
+        background: #facc15;
+        font-size: 24px;
+        font-weight: 950;
+        font-family: "JetBrains Mono", "Consolas", monospace;
+        box-shadow: 0 0 28px rgba(250, 204, 21, 0.4);
+      }
+
+      /* ============================================================
+         Transition wipe (shared)
+         ============================================================ */
+
+      #transition-wipe {
+        top: 0;
+        left: -2160px;
+        z-index: 200;
+        width: 2160px;
+        height: 1080px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(56, 189, 248, 0.85),
+          rgba(163, 230, 53, 0.72),
+          transparent
+        );
+        transform: skewX(-12deg);
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="90.72"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div id="grid" data-layout-ignore="true"></div>
+      <div id="scan" data-layout-ignore="true"></div>
+      <div id="frame-safe" data-layout-ignore="true"></div>
+      <div id="brand-bug" data-layout-ignore="true">
+        <div class="bug-mark">剛</div>
+        <span>剛來學</span>
+      </div>
+
+      <!-- ============================================================
+           SCENE 1 – BROLL_06: Codex New Project Workflow (0–14.8s)
+           ============================================================ -->
+      <section
+        id="s1"
+        class="scene clip"
+        data-start="0"
+        data-duration="14.8"
+        data-track-index="1"
+        data-broll-id="BROLL_06"
+        data-source-start="00:00:59,820"
+        data-source-end="00:01:14,620"
+      >
+        <div class="scene-content">
+          <div>
+            <div class="label">BROLL_06 / NEW PROJECT</div>
+            <h2 class="headline">從零開始<br /><span class="accent-blue">建專案</span></h2>
+            <p class="subline">新增專案，從頭命名，接上工具再執行。</p>
+          </div>
+          <div id="s6-app" class="app-panel panel">
+            <div class="app-chrome">
+              <div class="dot dot-r"></div>
+              <div class="dot dot-y"></div>
+              <div class="dot dot-g"></div>
+              <div class="app-title">Codex</div>
+            </div>
+            <div class="app-section-label">新增專案</div>
+            <div id="s6-btn-active" class="app-btn active">
+              <div class="app-btn-icon">+</div>
+              <div class="app-btn-text">From Scratch</div>
+            </div>
+            <div id="s6-btn-folder" class="app-btn dim">
+              <div class="app-btn-icon">F</div>
+              <div class="app-btn-text">從現有資料夾</div>
+            </div>
+            <div id="s6-input-row" class="input-row">
+              <div class="input-label">專案名稱</div>
+              <div class="input-field mono">
+                GitHub-Obsidian<span id="s6-cursor"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SCENE 2 – BROLL_07: Markdown Dragged into Codex (14.8–29.82s)
+           ============================================================ -->
+      <section
+        id="s2"
+        class="scene clip"
+        data-start="14.8"
+        data-duration="15.02"
+        data-track-index="1"
+        data-broll-id="BROLL_07"
+        data-source-start="00:01:18,580"
+        data-source-end="00:01:33,600"
+      >
+        <div class="scene-content">
+          <div>
+            <div class="label">BROLL_07 / DRAG INTO CODEX</div>
+            <h2 class="headline">把懶人包<br /><span class="accent-yellow">拖進 Codex</span></h2>
+          </div>
+          <div class="drag-stage">
+            <div class="drag-col">
+              <div id="md-card" class="panel">
+                <div class="node-small">MARKDOWN FILE</div>
+                <div class="md-filename">lazy-pack-2.5.md</div>
+                <div class="md-line"></div>
+                <div class="md-line" style="width: 78%"></div>
+                <div class="md-line" style="width: 55%"></div>
+                <div class="md-line" style="width: 88%"></div>
+                <div class="md-line" style="width: 62%"></div>
+              </div>
+            </div>
+            <div style="display: flex; justify-content: center; align-items: center">
+              <div id="drag-arrow">→</div>
+            </div>
+            <div id="chat-window" class="panel">
+              <div class="chat-top">
+                <div class="dot dot-r"></div>
+                <div class="dot dot-y"></div>
+                <div class="dot dot-g"></div>
+                <div class="chat-label">Codex Chat</div>
+              </div>
+              <div id="drop-zone">
+                <div class="drop-label">拖曳文件到這裡</div>
+                <div class="mini">Agent 會自動讀取並執行</div>
+              </div>
+              <div id="prompt-block">
+                依照這份文件安裝工具，完成後回報結果。
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SCENE 3 – BROLL_08: GitHub CLI + Obsidian MCP Split (29.82–48.7s)
+           ============================================================ -->
+      <section
+        id="s3"
+        class="scene clip"
+        data-start="29.82"
+        data-duration="18.88"
+        data-track-index="1"
+        data-broll-id="BROLL_08"
+        data-source-start="00:01:39,340"
+        data-source-end="00:01:58,220"
+      >
+        <div class="scene-content">
+          <div>
+            <div class="label">BROLL_08 / DUAL BRANCH</div>
+            <h2 class="headline">程式倉庫 +<br /><span class="accent-blue">第二大腦</span></h2>
+          </div>
+          <div class="split-stage">
+            <div id="github-branch" class="branch-panel panel">
+              <div class="branch-tag github-tag">CODE REPO</div>
+              <div class="branch-title">GitHub CLI</div>
+              <div class="branch-item">版本控管</div>
+              <div class="branch-item">Commit / Push</div>
+              <div class="branch-item">Repo 文件更新</div>
+            </div>
+            <div id="conn-github" class="conn-seg"></div>
+            <div id="hub-node">
+              <div class="hub-label">AI AGENT</div>
+              <div class="hub-title">Codex</div>
+            </div>
+            <div id="conn-obsidian" class="conn-seg"></div>
+            <div id="obsidian-branch" class="branch-panel panel obsidian-panel">
+              <div class="branch-tag obsidian-tag">SECOND BRAIN</div>
+              <div class="branch-title" style="color: #c084fc">Obsidian MCP</div>
+              <div class="branch-item" style="--c: #a855f7">知識庫管理</div>
+              <div class="branch-item" style="--c: #a855f7">筆記讀寫</div>
+              <div class="branch-item" style="--c: #a855f7">跨專案記憶</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SCENE 4 – BROLL_09: Human vs Codex Comparison (48.7–67.98s)
+           ============================================================ -->
+      <section
+        id="s4"
+        class="scene clip"
+        data-start="48.7"
+        data-duration="19.28"
+        data-track-index="1"
+        data-broll-id="BROLL_09"
+        data-source-start="00:02:04,740"
+        data-source-end="00:02:24,020"
+      >
+        <div class="scene-content">
+          <div>
+            <div class="label">BROLL_09 / HUMAN VS CODEX</div>
+            <h2 class="headline">你負責驗證<br /><span class="accent-yellow">Codex 負責執行</span></h2>
+          </div>
+          <div class="comparison">
+            <div id="col-human" class="comp-col">
+              <div class="col-header human-header">
+                <span class="col-tag">HUMAN</span>人類負責
+              </div>
+              <div class="comp-row panel">
+                <div class="comp-icon human-icon">人</div>
+                <div class="comp-text">登入系統</div>
+              </div>
+              <div class="comp-row panel">
+                <div class="comp-icon human-icon">✉</div>
+                <div class="comp-text">收驗證 Mail</div>
+              </div>
+              <div class="comp-row panel">
+                <div class="comp-icon human-icon">✎</div>
+                <div class="comp-text">填認證碼</div>
+              </div>
+            </div>
+            <div id="col-codex" class="comp-col">
+              <div class="col-header codex-header">
+                <span class="col-tag">CODEX</span>AI 負責
+              </div>
+              <div class="comp-row panel">
+                <div class="comp-icon codex-icon">C</div>
+                <div class="comp-text">安裝工具</div>
+              </div>
+              <div class="comp-row panel">
+                <div class="comp-icon codex-icon">≡</div>
+                <div class="comp-text">配置系統</div>
+              </div>
+              <div class="comp-row panel">
+                <div class="comp-icon codex-icon">⟐</div>
+                <div class="comp-text">連接服務</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SCENE 5 – BROLL_10: Obsidian MCP Vault Flow (67.98–90.72s)
+           ============================================================ -->
+      <section
+        id="s5"
+        class="scene clip"
+        data-start="67.98"
+        data-duration="22.74"
+        data-track-index="1"
+        data-broll-id="BROLL_10"
+        data-source-start="00:02:54,380"
+        data-source-end="00:03:17,120"
+      >
+        <div class="scene-content">
+          <div>
+            <div class="label">BROLL_10 / MCP VAULT FLOW</div>
+            <h2 class="headline">Obsidian<br /><span class="accent-blue">自動接上 MCP</span></h2>
+            <p class="subline">四步驟，最後一步必須人類手動完成。</p>
+          </div>
+          <div class="flow-stage">
+            <div class="fn-wrap">
+              <div id="fn1" class="flow-node panel fn-normal">
+                <div class="flow-node-tag">STEP 1</div>
+                <div class="flow-node-title">雲端硬碟</div>
+                <div class="mini">Cloud Drive</div>
+              </div>
+            </div>
+            <div id="fa1" class="flow-arrow"></div>
+            <div class="fn-wrap">
+              <div id="fn2" class="flow-node panel fn-normal">
+                <div class="flow-node-tag">STEP 2</div>
+                <div class="flow-node-title">Obsidian<br />Vault</div>
+                <div class="mini">知識庫</div>
+              </div>
+            </div>
+            <div id="fa2" class="flow-arrow"></div>
+            <div class="fn-wrap">
+              <div id="fn3" class="flow-node panel fn-normal">
+                <div class="flow-node-tag">STEP 3</div>
+                <div class="flow-node-title">MCP<br />連接器</div>
+                <div class="mini">Server</div>
+              </div>
+            </div>
+            <div id="fa3" class="flow-arrow"></div>
+            <div class="fn-wrap">
+              <div id="fn4" class="flow-node panel fn-warning">
+                <div class="flow-node-tag">STEP 4</div>
+                <div class="flow-node-title">瀏覽器<br />登入</div>
+                <div class="mini" style="color: #facc15">Login</div>
+              </div>
+              <div id="warning-badge">⚠ 人類必須</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div id="transition-wipe" data-layout-ignore="true"></div>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({
+        paused: true,
+        defaults: { ease: "power3.out" },
+      });
+
+      const sceneIds = ["#s1", "#s2", "#s3", "#s4", "#s5"];
+      tl.set(sceneIds, { autoAlpha: 0 }, 0);
+      tl.set("#s1", { autoAlpha: 1 }, 0);
+      tl.set("#scan", { y: -220 }, 0);
+
+      /* ── SCENE 1: BROLL_06 (0–14.8s) ─────────────────────────── */
+      tl.from("#brand-bug", { opacity: 0, y: -18, duration: 0.35 }, 0.18);
+      tl.from("#s1 .label", { opacity: 0, x: -36, duration: 0.35, ease: "expo.out" }, 0.28);
+      tl.from("#s1 .headline", { opacity: 0, y: 42, scale: 0.97, duration: 0.6 }, 0.55);
+      tl.from("#s1 .subline", { opacity: 0, y: 20, duration: 0.35, ease: "power2.out" }, 1.18);
+      tl.from("#s6-app", { opacity: 0, x: 60, scale: 0.96, duration: 0.55, ease: "expo.out" }, 0.42);
+      tl.from("#s6-btn-active", { scale: 0.88, opacity: 0, duration: 0.38, ease: "back.out(1.8)" }, 1.15);
+      tl.from("#s6-btn-folder", { opacity: 0, x: 20, duration: 0.3, ease: "power2.out" }, 1.52);
+      tl.from("#s6-input-row", { opacity: 0, y: 18, duration: 0.4, ease: "power2.out" }, 1.88);
+      tl.to("#s6-cursor", { opacity: 0, duration: 0.25, yoyo: true, repeat: 48, ease: "none" }, 2.5);
+      tl.to("#s6-btn-active", { scale: 1.03, duration: 0.6, yoyo: true, repeat: 5, ease: "sine.inOut" }, 3.2);
+
+      /* ── SCENE 2: BROLL_07 (14.8–29.82s) ────────────────────── */
+      tl.set("#s1", { autoAlpha: 0 }, 14.74);
+      tl.set("#s2", { autoAlpha: 1 }, 14.8);
+      tl.set("#prompt-block", { autoAlpha: 0, y: 28 }, 14.82);
+      tl.from("#s2 .label", { opacity: 0, x: -34, duration: 0.3, ease: "expo.out" }, 14.84);
+      tl.from("#s2 .headline", { opacity: 0, y: 34, scale: 0.98, duration: 0.5 }, 14.98);
+      tl.from("#md-card", { opacity: 0, x: -50, rotation: -4, duration: 0.55, ease: "expo.out" }, 15.38);
+      tl.from("#drag-arrow", { opacity: 0, scaleX: 0, transformOrigin: "left center", duration: 0.35 }, 15.95);
+      tl.from("#chat-window", { opacity: 0, x: 50, duration: 0.52 }, 16.1);
+      tl.from("#drop-zone", { opacity: 0, scale: 0.92, duration: 0.4, ease: "power2.out" }, 16.62);
+      tl.to("#md-card", { x: 80, y: 12, rotation: 3, duration: 0.75, ease: "power2.inOut" }, 17.45);
+      tl.to(
+        "#drop-zone",
+        {
+          boxShadow: "0 0 60px rgba(56,189,248,0.6) inset",
+          borderColor: "#38bdf8",
+          duration: 0.4,
+          yoyo: true,
+          repeat: 1,
+        },
+        18.2,
+      );
+      tl.to("#prompt-block", { autoAlpha: 1, y: 0, duration: 0.5, ease: "back.out(1.6)" }, 18.82);
+      tl.to("#chat-window", { scale: 1.014, duration: 0.8, yoyo: true, repeat: 6, ease: "sine.inOut" }, 20.5);
+
+      /* ── SCENE 3: BROLL_08 (29.82–48.7s) ────────────────────── */
+      tl.set("#s2", { autoAlpha: 0 }, 29.76);
+      tl.set("#s3", { autoAlpha: 1 }, 29.82);
+      tl.from("#s3 .label", { opacity: 0, x: -34, duration: 0.3, ease: "expo.out" }, 29.86);
+      tl.from("#s3 .headline", { opacity: 0, y: 34, duration: 0.5 }, 30.0);
+      tl.from("#hub-node", { scale: 0, duration: 0.45, ease: "back.out(1.8)" }, 30.52);
+      tl.from("#github-branch", { opacity: 0, x: -60, duration: 0.52, ease: "expo.out" }, 30.98);
+      tl.from("#obsidian-branch", { opacity: 0, x: 60, duration: 0.52, ease: "expo.out" }, 31.2);
+      tl.from(
+        "#conn-github",
+        { scaleX: 0, transformOrigin: "right center", duration: 0.42, ease: "power2.out" },
+        31.58,
+      );
+      tl.from(
+        "#conn-obsidian",
+        { scaleX: 0, transformOrigin: "left center", duration: 0.42, ease: "power2.out" },
+        31.8,
+      );
+      tl.from(
+        "#github-branch .branch-item",
+        { opacity: 0, x: -22, stagger: 0.16, duration: 0.38, ease: "power2.out" },
+        32.2,
+      );
+      tl.from(
+        "#obsidian-branch .branch-item",
+        { opacity: 0, x: 22, stagger: 0.16, duration: 0.38, ease: "power2.out" },
+        32.42,
+      );
+      tl.to("#hub-node", { scale: 1.04, duration: 0.7, yoyo: true, repeat: 10, ease: "sine.inOut" }, 33.5);
+      tl.to(
+        "#conn-github, #conn-obsidian",
+        { opacity: 0.5, duration: 0.9, yoyo: true, repeat: 8, ease: "sine.inOut" },
+        34.0,
+      );
+
+      /* ── SCENE 4: BROLL_09 (48.7–67.98s) ────────────────────── */
+      tl.set("#s3", { autoAlpha: 0 }, 48.64);
+      tl.set("#s4", { autoAlpha: 1 }, 48.7);
+      tl.from("#s4 .label", { opacity: 0, x: -34, duration: 0.3, ease: "expo.out" }, 48.74);
+      tl.from("#s4 .headline", { opacity: 0, y: 34, duration: 0.5 }, 48.9);
+      tl.from("#col-human", { opacity: 0, x: -48, duration: 0.45, ease: "expo.out" }, 49.42);
+      tl.from("#col-codex", { opacity: 0, x: 48, duration: 0.45, ease: "expo.out" }, 49.42);
+      tl.from(
+        "#col-human .comp-row",
+        { opacity: 0, x: -28, stagger: 0.22, duration: 0.42, ease: "power2.out" },
+        49.98,
+      );
+      tl.from(
+        "#col-codex .comp-row",
+        { opacity: 0, x: 28, stagger: 0.22, duration: 0.42, ease: "power2.out" },
+        50.22,
+      );
+      tl.to(
+        "#col-codex .comp-row",
+        { scale: 1.02, duration: 0.55, yoyo: true, stagger: 0.32, repeat: 3, ease: "sine.inOut" },
+        53.5,
+      );
+
+      /* ── SCENE 5: BROLL_10 (67.98–90.72s) ───────────────────── */
+      tl.set("#s4", { autoAlpha: 0 }, 67.92);
+      tl.set("#s5", { autoAlpha: 1 }, 67.98);
+      tl.set("#warning-badge", { autoAlpha: 0, y: 10 }, 68.0);
+      tl.from("#s5 .label", { opacity: 0, x: -34, duration: 0.3, ease: "expo.out" }, 68.02);
+      tl.from("#s5 .headline", { opacity: 0, y: 34, duration: 0.5 }, 68.18);
+      tl.from("#s5 .subline", { opacity: 0, y: 18, duration: 0.35, ease: "power2.out" }, 68.72);
+      tl.from("#fn1", { scale: 0, duration: 0.4, ease: "back.out(1.8)" }, 68.94);
+      tl.from("#fa1", { scaleX: 0, transformOrigin: "left center", duration: 0.3, ease: "power2.out" }, 69.36);
+      tl.from("#fn2", { scale: 0, duration: 0.4, ease: "back.out(1.8)" }, 69.68);
+      tl.from("#fa2", { scaleX: 0, transformOrigin: "left center", duration: 0.3, ease: "power2.out" }, 70.1);
+      tl.from("#fn3", { scale: 0, duration: 0.4, ease: "back.out(1.8)" }, 70.42);
+      tl.from("#fa3", { scaleX: 0, transformOrigin: "left center", duration: 0.3, ease: "power2.out" }, 70.84);
+      tl.from("#fn4", { scale: 0, duration: 0.4, ease: "back.out(1.8)" }, 71.16);
+      tl.to("#warning-badge", { autoAlpha: 1, y: 0, duration: 0.4, ease: "back.out(2)" }, 71.6);
+      tl.to(
+        "#fn1, #fn2, #fn3",
+        { scale: 1.04, duration: 0.65, yoyo: true, stagger: 0.55, repeat: 5, ease: "sine.inOut" },
+        72.5,
+      );
+      tl.to(
+        "#fn4",
+        {
+          boxShadow:
+            "0 0 60px rgba(250,204,21,0.65), 0 24px 80px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08)",
+          duration: 0.8,
+          yoyo: true,
+          repeat: 10,
+          ease: "sine.inOut",
+        },
+        73.0,
+      );
+
+      /* ── TRANSITIONS ─────────────────────────────────────────── */
+      [14.0, 29.1, 48.0, 67.3].forEach((t) => {
+        tl.fromTo(
+          "#transition-wipe",
+          { x: 0 },
+          { x: 4320, duration: 0.55, ease: "power2.inOut" },
+          t,
+        );
+      });
+
+      tl.to("#scan", { y: 1180, duration: 90.0, ease: "none" }, 0);
+      tl.to({}, { duration: 0.01 }, 90.72);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>

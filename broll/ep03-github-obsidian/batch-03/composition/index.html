@@ -1,0 +1,1481 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #0b1020;
+        font-family:
+          "Noto Sans TC",
+          "Microsoft JhengHei",
+          "PingFang TC",
+          system-ui,
+          sans-serif;
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        color: #ffffff;
+        background:
+          radial-gradient(circle at 18% 18%, rgba(56, 189, 248, 0.26), transparent 28%),
+          radial-gradient(circle at 84% 74%, rgba(168, 85, 247, 0.28), transparent 30%),
+          linear-gradient(135deg, #0b1020 0%, #111027 48%, #15171f 100%);
+      }
+
+      #grid,
+      #scan,
+      #brand-bug,
+      #frame-safe,
+      #transition-wipe {
+        position: absolute;
+        pointer-events: none;
+      }
+
+      #grid {
+        inset: 0;
+        z-index: 1;
+        opacity: 0.22;
+        background-image:
+          linear-gradient(rgba(56, 189, 248, 0.2) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(56, 189, 248, 0.2) 1px, transparent 1px);
+        background-size: 72px 72px;
+      }
+
+      #scan {
+        inset: 0;
+        z-index: 2;
+        opacity: 0.18;
+        background: linear-gradient(
+          180deg,
+          transparent 0%,
+          rgba(255, 255, 255, 0.08) 50%,
+          transparent 100%
+        );
+        height: 180px;
+      }
+
+      #brand-bug {
+        top: 72px;
+        left: 120px;
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .bug-mark {
+        width: 52px;
+        height: 52px;
+        display: grid;
+        place-items: center;
+        border: 2px solid #38bdf8;
+        color: #38bdf8;
+        background: rgba(56, 189, 248, 0.1);
+        box-shadow: 0 0 28px rgba(56, 189, 248, 0.35);
+        font-size: 24px;
+        font-weight: 950;
+      }
+
+      #brand-bug span {
+        color: #ffffff;
+        font-size: 62px;
+        line-height: 1;
+        font-weight: 950;
+        letter-spacing: 0;
+        text-shadow: 0 0 28px rgba(56, 189, 248, 0.34);
+      }
+
+      #frame-safe {
+        z-index: 4;
+        inset: 108px 192px;
+        border: 1px solid rgba(56, 189, 248, 0.16);
+      }
+
+      .scene {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        overflow: hidden;
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      #s1 {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .scene-content {
+        position: absolute;
+        inset: 108px 192px 84px;
+        display: grid;
+        gap: 40px;
+        z-index: 12;
+      }
+
+      .label {
+        color: #a3e635;
+        font-family: "JetBrains Mono", "Consolas", monospace;
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: 0.03em;
+      }
+
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+
+      .headline {
+        color: #ffffff;
+        font-size: 86px;
+        line-height: 1.06;
+        font-weight: 950;
+        letter-spacing: 0;
+      }
+
+      .headline .accent-blue {
+        color: #38bdf8;
+        text-shadow: 0 0 30px rgba(56, 189, 248, 0.45);
+      }
+
+      .headline .accent-yellow {
+        color: #facc15;
+        text-shadow: 0 0 30px rgba(250, 204, 21, 0.38);
+      }
+
+      .headline .accent-green {
+        color: #a3e635;
+        text-shadow: 0 0 28px rgba(163, 230, 53, 0.4);
+      }
+
+      .headline .accent-purple {
+        color: #c084fc;
+        text-shadow: 0 0 30px rgba(192, 132, 252, 0.45);
+      }
+
+      .subline {
+        color: #e5e7eb;
+        font-size: 30px;
+        line-height: 1.45;
+        font-weight: 700;
+      }
+
+      .panel {
+        border: 1px solid rgba(56, 189, 248, 0.25);
+        background: rgba(11, 16, 32, 0.78);
+        box-shadow:
+          0 24px 80px rgba(0, 0, 0, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      .mono {
+        font-family: "JetBrains Mono", "Consolas", monospace;
+      }
+
+      .mini {
+        color: #94a3b8;
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      /* ============================================================
+         SCENE 1 – BROLL_11: GitHub OAuth Device Code (0–26.08s)
+         ============================================================ */
+
+      #s1 .scene-content {
+        grid-template-columns: 520px 1fr;
+        align-items: center;
+      }
+
+      .steps-col {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .step-card {
+        padding: 26px 32px;
+        display: flex;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .step-num {
+        width: 56px;
+        height: 56px;
+        display: grid;
+        place-items: center;
+        font-size: 28px;
+        font-weight: 950;
+        color: #38bdf8;
+        border: 2px solid #38bdf8;
+        flex-shrink: 0;
+        box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
+      }
+
+      .step-text {
+        color: #ffffff;
+        font-size: 32px;
+        font-weight: 850;
+        line-height: 1.3;
+      }
+
+      .step-code {
+        font-family: "JetBrains Mono", "Consolas", monospace;
+        font-size: 36px;
+        font-weight: 950;
+        color: #a3e635;
+        letter-spacing: 0.1em;
+        padding: 8px 20px;
+        background: rgba(163, 230, 53, 0.08);
+        border: 1px solid rgba(163, 230, 53, 0.3);
+      }
+
+      .step-success .step-num {
+        color: #a3e635;
+        border-color: #a3e635;
+        box-shadow: 0 0 20px rgba(163, 230, 53, 0.3);
+      }
+
+      .step-success .step-text {
+        color: #a3e635;
+      }
+
+      /* ============================================================
+         SCENE 2 – BROLL_12: Restart Codex (26.08–42.18s)
+         ============================================================ */
+
+      #s2 .scene-content {
+        align-content: start;
+      }
+
+      .restart-stage {
+        display: grid;
+        grid-template-columns: 1fr 80px 1fr 80px 1fr;
+        align-items: center;
+        gap: 0;
+      }
+
+      .restart-card {
+        padding: 36px 28px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        text-align: center;
+        min-height: 300px;
+        justify-content: center;
+      }
+
+      .restart-icon {
+        font-size: 60px;
+        font-weight: 950;
+        line-height: 1;
+      }
+
+      .restart-title {
+        color: #ffffff;
+        font-size: 34px;
+        font-weight: 950;
+        line-height: 1.2;
+      }
+
+      .restart-sub {
+        color: #94a3b8;
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .restart-warn {
+        border-color: rgba(250, 204, 21, 0.4);
+        box-shadow:
+          0 0 40px rgba(250, 204, 21, 0.15),
+          0 24px 80px rgba(0, 0, 0, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      .restart-warn .restart-icon {
+        color: #facc15;
+        text-shadow: 0 0 24px rgba(250, 204, 21, 0.5);
+      }
+
+      .restart-warn .restart-title {
+        color: #facc15;
+      }
+
+      .restart-arrow {
+        color: #38bdf8;
+        font-size: 52px;
+        font-weight: 950;
+        text-align: center;
+        text-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+      }
+
+      /* ============================================================
+         SCENE 3 – BROLL_13: Codex Updates GitHub (42.18–64.92s)
+         ============================================================ */
+
+      #s3 .scene-content {
+        grid-template-columns: 520px 1fr;
+        align-items: center;
+      }
+
+      .diff-panel {
+        height: 560px;
+        padding: 28px 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        overflow: hidden;
+      }
+
+      .diff-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .diff-filename {
+        font-family: "JetBrains Mono", "Consolas", monospace;
+        font-size: 24px;
+        font-weight: 950;
+        color: #e5e7eb;
+      }
+
+      .diff-line {
+        font-family: "JetBrains Mono", "Consolas", monospace;
+        font-size: 22px;
+        font-weight: 700;
+        padding: 6px 16px;
+        line-height: 1.4;
+      }
+
+      .diff-del {
+        color: #fb7185;
+        background: rgba(251, 113, 133, 0.08);
+        border-left: 4px solid #fb7185;
+      }
+
+      .diff-add {
+        color: #a3e635;
+        background: rgba(163, 230, 53, 0.08);
+        border-left: 4px solid #a3e635;
+      }
+
+      .diff-ctx {
+        color: #64748b;
+        border-left: 4px solid transparent;
+      }
+
+      .commit-card {
+        margin-top: 16px;
+        padding: 22px 28px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        border: 1px solid rgba(163, 230, 53, 0.3);
+        background: rgba(163, 230, 53, 0.06);
+        box-shadow: 0 0 28px rgba(163, 230, 53, 0.12);
+      }
+
+      .commit-icon {
+        font-size: 32px;
+        color: #a3e635;
+        font-weight: 950;
+        font-family: "JetBrains Mono", "Consolas", monospace;
+      }
+
+      .commit-text {
+        color: #ffffff;
+        font-size: 28px;
+        font-weight: 850;
+      }
+
+      .commit-hash {
+        font-family: "JetBrains Mono", "Consolas", monospace;
+        font-size: 20px;
+        color: #64748b;
+        margin-top: 4px;
+      }
+
+      /* ============================================================
+         SCENE 4 – BROLL_14: Codex Reads Obsidian (64.92–81.76s)
+         ============================================================ */
+
+      #s4 .scene-content {
+        grid-template-columns: 520px 1fr;
+        align-items: center;
+      }
+
+      .knowledge-panel {
+        height: 560px;
+        padding: 28px 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        border-color: rgba(168, 85, 247, 0.3);
+        box-shadow:
+          0 24px 80px rgba(0, 0, 0, 0.35),
+          0 0 44px rgba(168, 85, 247, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      .kp-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+      }
+
+      .kp-title {
+        color: #c084fc;
+        font-size: 28px;
+        font-weight: 950;
+      }
+
+      .kp-nodes {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .kp-node {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 14px 20px;
+        border-left: 4px solid rgba(168, 85, 247, 0.4);
+        background: rgba(168, 85, 247, 0.06);
+      }
+
+      .kp-node-dot {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #a855f7;
+        box-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
+        flex-shrink: 0;
+      }
+
+      .kp-node.active-node {
+        border-left-color: #a855f7;
+        background: rgba(168, 85, 247, 0.14);
+      }
+
+      .kp-node.active-node .kp-node-dot {
+        box-shadow: 0 0 22px rgba(168, 85, 247, 0.8);
+      }
+
+      .kp-node-text {
+        color: #e5e7eb;
+        font-size: 28px;
+        font-weight: 800;
+      }
+
+      .kp-updated {
+        color: #a855f7;
+        font-size: 22px;
+        font-weight: 700;
+        font-family: "JetBrains Mono", "Consolas", monospace;
+      }
+
+      /* ============================================================
+         SCENE 5 – BROLL_15: Global Tools (81.76–92.32s)
+         ============================================================ */
+
+      #s5 .scene-content {
+        align-content: center;
+      }
+
+      .arch-stage {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 32px;
+      }
+
+      .tool-layer {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+      }
+
+      .tool-chip {
+        padding: 18px 36px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 34px;
+        font-weight: 950;
+      }
+
+      .tool-chip.github {
+        border-color: rgba(56, 189, 248, 0.4);
+        box-shadow:
+          0 0 36px rgba(56, 189, 248, 0.2),
+          0 24px 80px rgba(0, 0, 0, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        color: #38bdf8;
+      }
+
+      .tool-chip.obsidian {
+        border-color: rgba(168, 85, 247, 0.4);
+        box-shadow:
+          0 0 36px rgba(168, 85, 247, 0.2),
+          0 24px 80px rgba(0, 0, 0, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        color: #c084fc;
+      }
+
+      .arch-label {
+        color: #a3e635;
+        font-size: 22px;
+        font-weight: 850;
+        letter-spacing: 0.06em;
+        font-family: "JetBrains Mono", "Consolas", monospace;
+      }
+
+      .project-row {
+        display: flex;
+        gap: 24px;
+      }
+
+      .project-chip {
+        padding: 16px 28px;
+        font-size: 26px;
+        font-weight: 850;
+        color: #e5e7eb;
+        border-color: rgba(255, 255, 255, 0.18);
+      }
+
+      .vert-line {
+        width: 2px;
+        height: 32px;
+        background: linear-gradient(180deg, rgba(56, 189, 248, 0.5), rgba(168, 85, 247, 0.5));
+        box-shadow: 0 0 8px rgba(56, 189, 248, 0.25);
+      }
+
+      /* ============================================================
+         SCENE 6 – BROLL_16: Learning Roadmap (92.32–108.52s)
+         ============================================================ */
+
+      #s6 .scene-content {
+        align-content: start;
+      }
+
+      .roadmap-stage {
+        display: grid;
+        grid-template-columns: 1fr 180px 1fr;
+        align-items: center;
+        gap: 0;
+        height: 420px;
+      }
+
+      .road-path {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .road-card {
+        padding: 22px 28px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+
+      .road-tag {
+        padding: 6px 14px;
+        font-size: 18px;
+        font-weight: 900;
+        letter-spacing: 0.06em;
+        font-family: "JetBrains Mono", "Consolas", monospace;
+        flex-shrink: 0;
+      }
+
+      .tag-codex {
+        color: #0b1020;
+        background: #38bdf8;
+      }
+
+      .tag-claude {
+        color: #0b1020;
+        background: #c084fc;
+      }
+
+      .road-text {
+        color: #ffffff;
+        font-size: 28px;
+        font-weight: 850;
+      }
+
+      .road-center {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      .hub-badge {
+        width: 160px;
+        height: 160px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: 2px solid rgba(56, 189, 248, 0.4);
+        background: rgba(17, 16, 39, 0.95);
+        box-shadow:
+          0 0 50px rgba(56, 189, 248, 0.25),
+          0 0 80px rgba(168, 85, 247, 0.15);
+      }
+
+      .hub-badge-label {
+        color: #a3e635;
+        font-size: 16px;
+        font-weight: 850;
+        letter-spacing: 0.05em;
+        font-family: "JetBrains Mono", "Consolas", monospace;
+        text-align: center;
+      }
+
+      .hub-badge-title {
+        color: #ffffff;
+        font-size: 24px;
+        font-weight: 950;
+        text-align: center;
+      }
+
+      .road-arrow {
+        color: #38bdf8;
+        font-size: 44px;
+        text-shadow: 0 0 16px rgba(56, 189, 248, 0.5);
+      }
+
+      /* ============================================================
+         SCENE 7 – BROLL_17: Shared Template (108.52–126.36s)
+         ============================================================ */
+
+      #s7 .scene-content {
+        align-content: start;
+      }
+
+      .tmpl-stage {
+        display: grid;
+        grid-template-columns: 1fr 580px 1fr;
+        align-items: center;
+        gap: 40px;
+        height: 480px;
+      }
+
+      .tool-box {
+        height: 360px;
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      .tool-box-tag {
+        padding: 8px 18px;
+        font-size: 20px;
+        font-weight: 900;
+        letter-spacing: 0.06em;
+        font-family: "JetBrains Mono", "Consolas", monospace;
+      }
+
+      .tool-box-codex { border-color: rgba(56, 189, 248, 0.35); }
+      .tool-box-codex .tool-box-tag { color: #0b1020; background: #38bdf8; }
+
+      .tool-box-claude { border-color: rgba(192, 132, 252, 0.35); }
+      .tool-box-claude .tool-box-tag { color: #0b1020; background: #c084fc; }
+
+      .tool-box-name {
+        color: #ffffff;
+        font-size: 48px;
+        font-weight: 950;
+      }
+
+      .tool-box-sub {
+        color: #94a3b8;
+        font-size: 26px;
+        font-weight: 700;
+        text-align: center;
+      }
+
+      .tmpl-card {
+        height: 440px;
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        border: 2px solid rgba(163, 230, 53, 0.4);
+        background: rgba(163, 230, 53, 0.06);
+        box-shadow:
+          0 0 56px rgba(163, 230, 53, 0.2),
+          0 24px 80px rgba(0, 0, 0, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      .tmpl-header {
+        color: #a3e635;
+        font-size: 22px;
+        font-weight: 850;
+        letter-spacing: 0.06em;
+        font-family: "JetBrains Mono", "Consolas", monospace;
+      }
+
+      .tmpl-title {
+        color: #ffffff;
+        font-size: 44px;
+        font-weight: 950;
+        line-height: 1.1;
+      }
+
+      .tmpl-module {
+        padding: 14px 20px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        border: 1px solid rgba(163, 230, 53, 0.2);
+        background: rgba(163, 230, 53, 0.04);
+      }
+
+      .tmpl-module-dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #a3e635;
+        box-shadow: 0 0 8px rgba(163, 230, 53, 0.5);
+        flex-shrink: 0;
+      }
+
+      .tmpl-module-text {
+        color: #e5e7eb;
+        font-size: 26px;
+        font-weight: 800;
+      }
+
+      .tmpl-arrow {
+        color: #a3e635;
+        font-size: 48px;
+        font-weight: 950;
+        text-shadow: 0 0 20px rgba(163, 230, 53, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* ============================================================
+         SCENE 8 – BROLL_18: Final CTA (126.36–142.84s)
+         ============================================================ */
+
+      #s8 .scene-content {
+        align-content: center;
+      }
+
+      .cta-stage {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 36px;
+      }
+
+      .cta-agent-row {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+      }
+
+      .cta-tool {
+        width: 280px;
+        height: 200px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+      }
+
+      .cta-tool.github {
+        border-color: rgba(56, 189, 248, 0.45);
+        box-shadow:
+          0 0 48px rgba(56, 189, 248, 0.2),
+          0 24px 80px rgba(0, 0, 0, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      .cta-tool.obsidian {
+        border-color: rgba(168, 85, 247, 0.45);
+        box-shadow:
+          0 0 48px rgba(168, 85, 247, 0.2),
+          0 24px 80px rgba(0, 0, 0, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      .cta-tool-tag {
+        font-size: 18px;
+        font-weight: 850;
+        letter-spacing: 0.06em;
+        font-family: "JetBrains Mono", "Consolas", monospace;
+      }
+
+      .cta-tool.github .cta-tool-tag { color: #38bdf8; }
+      .cta-tool.obsidian .cta-tool-tag { color: #a855f7; }
+
+      .cta-tool-name {
+        color: #ffffff;
+        font-size: 38px;
+        font-weight: 950;
+        text-align: center;
+      }
+
+      .cta-hub {
+        width: 320px;
+        height: 320px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        border: 2px solid rgba(56, 189, 248, 0.55);
+        background: rgba(17, 16, 39, 0.95);
+        box-shadow:
+          0 0 80px rgba(56, 189, 248, 0.35),
+          0 0 140px rgba(168, 85, 247, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      }
+
+      .cta-hub-label {
+        color: #a3e635;
+        font-size: 20px;
+        font-weight: 850;
+        letter-spacing: 0.05em;
+        font-family: "JetBrains Mono", "Consolas", monospace;
+      }
+
+      .cta-hub-title {
+        color: #ffffff;
+        font-size: 56px;
+        font-weight: 950;
+      }
+
+      .cta-conn {
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, #38bdf8, rgba(56, 189, 248, 0.1));
+        box-shadow: 0 0 16px rgba(56, 189, 248, 0.4);
+      }
+
+      .cta-conn.right {
+        background: linear-gradient(90deg, rgba(168, 85, 247, 0.1), #a855f7);
+      }
+
+      .cta-buttons {
+        display: flex;
+        gap: 24px;
+      }
+
+      .cta-btn {
+        padding: 22px 52px;
+        font-size: 40px;
+        font-weight: 950;
+        text-align: center;
+      }
+
+      .cta-btn.subscribe {
+        color: #0b1020;
+        background: #38bdf8;
+        border: none;
+        box-shadow: 0 0 40px rgba(56, 189, 248, 0.45);
+      }
+
+      .cta-btn.like {
+        color: #0b1020;
+        background: #facc15;
+        border: none;
+        box-shadow: 0 0 36px rgba(250, 204, 21, 0.4);
+      }
+
+      .cta-btn.share {
+        color: #0b1020;
+        background: #a3e635;
+        border: none;
+        box-shadow: 0 0 36px rgba(163, 230, 53, 0.4);
+      }
+
+      /* ============================================================
+         Transition wipe (shared)
+         ============================================================ */
+
+      #transition-wipe {
+        top: 0;
+        left: -2160px;
+        z-index: 200;
+        width: 2160px;
+        height: 1080px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(56, 189, 248, 0.85),
+          rgba(163, 230, 53, 0.72),
+          transparent
+        );
+        transform: skewX(-12deg);
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="142.84"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div id="grid" data-layout-ignore="true"></div>
+      <div id="scan" data-layout-ignore="true"></div>
+      <div id="frame-safe" data-layout-ignore="true"></div>
+      <div id="brand-bug" data-layout-ignore="true">
+        <div class="bug-mark">剛</div>
+        <span>剛來學</span>
+      </div>
+
+      <!-- ============================================================
+           SCENE 1 – BROLL_11: GitHub OAuth Device Code (0–26.08s)
+           ============================================================ -->
+      <section
+        id="s1"
+        class="scene clip"
+        data-start="0"
+        data-duration="26.08"
+        data-track-index="1"
+        data-broll-id="BROLL_11"
+        data-source-start="00:03:20,920"
+        data-source-end="00:03:47,000"
+      >
+        <div class="scene-content">
+          <div>
+            <div class="label">BROLL_11 / GITHUB OAUTH</div>
+            <h2 class="headline">複製登入碼<br /><span class="accent-green">GitHub 連線成功</span></h2>
+            <p class="subline">設備碼 OAuth 驗證，人類複製 Code，GitHub 確認後自動連接。</p>
+          </div>
+          <div class="steps-col">
+            <div id="step1" class="step-card panel">
+              <div class="step-num">1</div>
+              <div>
+                <div class="step-text">點擊 Continue</div>
+                <div class="step-code">COPY CODE</div>
+              </div>
+            </div>
+            <div id="step2" class="step-card panel">
+              <div class="step-num">2</div>
+              <div>
+                <div class="step-text">Email 驗證確認</div>
+                <div class="mini">✉ Check your inbox</div>
+              </div>
+            </div>
+            <div id="step3" class="step-card panel step-success">
+              <div class="step-num">✓</div>
+              <div>
+                <div class="step-text">成功連接 GitHub</div>
+                <div class="mini" style="color:#a3e635">Connected to GitHub</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SCENE 2 – BROLL_12: Restart Codex (26.08–42.18s)
+           ============================================================ -->
+      <section
+        id="s2"
+        class="scene clip"
+        data-start="26.08"
+        data-duration="16.1"
+        data-track-index="1"
+        data-broll-id="BROLL_12"
+        data-source-start="00:03:50,760"
+        data-source-end="00:04:06,860"
+      >
+        <div class="scene-content">
+          <div>
+            <div class="label">BROLL_12 / RESTART REQUIRED</div>
+            <h2 class="headline">重開才<span class="accent-yellow">生效</span></h2>
+          </div>
+          <div class="restart-stage">
+            <div id="rc1" class="restart-card panel restart-warn">
+              <div class="restart-icon">⚠</div>
+              <div class="restart-title">關掉 Codex<br />重新開啟</div>
+              <div class="restart-sub">Restart Required</div>
+            </div>
+            <div id="ra1" class="restart-arrow">→</div>
+            <div id="rc2" class="restart-card panel">
+              <div class="restart-icon" style="color:#38bdf8;text-shadow:0 0 20px rgba(56,189,248,0.5)">↻</div>
+              <div class="restart-title">重新開啟<br />專案</div>
+              <div class="restart-sub">Reopen Project</div>
+            </div>
+            <div id="ra2" class="restart-arrow">→</div>
+            <div id="rc3" class="restart-card panel">
+              <div class="restart-icon" style="color:#a3e635;text-shadow:0 0 20px rgba(163,230,53,0.5)">✓</div>
+              <div class="restart-title">測試懶人包<br />2.5 成功</div>
+              <div class="restart-sub" style="color:#a3e635">GitHub Connected</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SCENE 3 – BROLL_13: Codex Updates GitHub (42.18–64.92s)
+           ============================================================ -->
+      <section
+        id="s3"
+        class="scene clip"
+        data-start="42.18"
+        data-duration="22.74"
+        data-track-index="1"
+        data-broll-id="BROLL_13"
+        data-source-start="00:04:11,760"
+        data-source-end="00:04:34,500"
+      >
+        <div class="scene-content">
+          <div>
+            <div class="label">BROLL_13 / CODEX UPDATES REPO</div>
+            <h2 class="headline">踩坑記錄<br /><span class="accent-green">推上 GitHub</span></h2>
+            <p class="subline">Agent 把更新寫進 Repo，Markdown 文件版本控管。</p>
+          </div>
+          <div>
+            <div id="diff-panel" class="diff-panel panel">
+              <div class="diff-header">
+                <span class="diff-filename">lazy-pack-2.5.md</span>
+                <span class="mini">github-obsidian / docs</span>
+              </div>
+              <div class="diff-line diff-ctx">  ## GitHub CLI 安裝</div>
+              <div id="dl1" class="diff-line diff-del">- 安裝步驟：brew install gh</div>
+              <div id="dl2" class="diff-line diff-add">+ 已驗證：brew install gh &amp;&amp; gh auth login</div>
+              <div class="diff-line diff-ctx">  ## 注意事項</div>
+              <div id="dl3" class="diff-line diff-del">- OAuth 驗證需手動操作</div>
+              <div id="dl4" class="diff-line diff-add">+ Device code flow: copy code → browser → confirm</div>
+              <div id="dl5" class="diff-line diff-add">+ 設備碼驗證完成後需重開 Codex 生效</div>
+            </div>
+            <div id="commit-card" class="commit-card">
+              <div class="commit-icon">↑</div>
+              <div>
+                <div class="commit-text">docs: update lazy-pack-2.5 with verified steps</div>
+                <div class="commit-hash">a3f9e1b · pushed to origin/main</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SCENE 4 – BROLL_14: Codex Reads Obsidian (64.92–81.76s)
+           ============================================================ -->
+      <section
+        id="s4"
+        class="scene clip"
+        data-start="64.92"
+        data-duration="16.84"
+        data-track-index="1"
+        data-broll-id="BROLL_14"
+        data-source-start="00:04:36,600"
+        data-source-end="00:04:53,440"
+      >
+        <div class="scene-content">
+          <div>
+            <div class="label">BROLL_14 / OBSIDIAN READ</div>
+            <h2 class="headline">Codex 讀取<br /><span class="accent-purple">Obsidian 筆記</span></h2>
+            <p class="subline">第二大腦接通，知識庫同步更新。</p>
+          </div>
+          <div id="kp" class="knowledge-panel panel">
+            <div class="kp-header">
+              <div class="kp-title">Obsidian Vault</div>
+              <div class="mini">MCP Connected</div>
+            </div>
+            <div class="kp-nodes">
+              <div id="kn1" class="kp-node active-node">
+                <div class="kp-node-dot"></div>
+                <div class="kp-node-text">Codex 懶人包 2.5</div>
+                <div class="kp-updated">Updated ✓</div>
+              </div>
+              <div id="kn2" class="kp-node active-node">
+                <div class="kp-node-dot"></div>
+                <div class="kp-node-text">GitHub CLI 踩坑筆記</div>
+                <div class="kp-updated">Writing…</div>
+              </div>
+              <div id="kn3" class="kp-node">
+                <div class="kp-node-dot" style="background:#475569;box-shadow:none"></div>
+                <div class="kp-node-text" style="color:#64748b">EP03 學習路線</div>
+              </div>
+              <div id="kn4" class="kp-node">
+                <div class="kp-node-dot" style="background:#475569;box-shadow:none"></div>
+                <div class="kp-node-text" style="color:#64748b">MCP Server 設定</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SCENE 5 – BROLL_15: Global Tools (81.76–92.32s)
+           ============================================================ -->
+      <section
+        id="s5"
+        class="scene clip"
+        data-start="81.76"
+        data-duration="10.55"
+        data-track-index="1"
+        data-broll-id="BROLL_15"
+        data-source-start="00:04:53,440"
+        data-source-end="00:05:04,000"
+      >
+        <div class="scene-content">
+          <div>
+            <div class="label">BROLL_15 / GLOBAL TOOLS</div>
+            <h2 class="headline">全域工具<br /><span class="accent-blue">跨專案共用</span></h2>
+          </div>
+          <div class="arch-stage">
+            <div class="arch-label">▸ SHARED TOOL LAYER</div>
+            <div id="tool-layer" class="tool-layer">
+              <div id="tl-github" class="tool-chip github panel">GitHub</div>
+              <div class="mini" style="color:#38bdf8">+</div>
+              <div id="tl-obsidian" class="tool-chip obsidian panel">Obsidian</div>
+            </div>
+            <div id="vert-lines" style="display:flex;gap:128px">
+              <div class="vert-line"></div>
+              <div class="vert-line"></div>
+              <div class="vert-line"></div>
+            </div>
+            <div id="project-row" class="project-row">
+              <div class="project-chip panel">EP03 Project</div>
+              <div class="project-chip panel">EP04 Project</div>
+              <div class="project-chip panel">EP05 Project</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SCENE 6 – BROLL_16: Learning Roadmap (92.32–108.52s)
+           ============================================================ -->
+      <section
+        id="s6"
+        class="scene clip"
+        data-start="92.32"
+        data-duration="16.2"
+        data-track-index="1"
+        data-broll-id="BROLL_16"
+        data-source-start="00:05:04,000"
+        data-source-end="00:05:20,200"
+      >
+        <div class="scene-content">
+          <div>
+            <div class="label">BROLL_16 / LEARNING ROADMAP</div>
+            <h2 class="headline">延伸學習<br /><span class="accent-blue">路線圖</span></h2>
+          </div>
+          <div class="roadmap-stage">
+            <div id="road-left" class="road-path">
+              <div class="road-card panel">
+                <div class="road-tag tag-codex">CODEX</div>
+                <div class="road-text">基本功 EP06</div>
+              </div>
+              <div class="road-card panel">
+                <div class="road-tag tag-codex">CODEX</div>
+                <div class="road-text">GitHub 進階應用</div>
+              </div>
+              <div class="road-card panel">
+                <div class="road-tag tag-codex">CODEX</div>
+                <div class="road-text">EP08 Obsidian 整合</div>
+              </div>
+            </div>
+            <div id="road-center" class="road-center">
+              <div class="road-arrow">→</div>
+              <div class="hub-badge">
+                <div class="hub-badge-label">APPLIES TO<br />BOTH</div>
+                <div class="hub-badge-title">GitHub<br />+<br />Obsidian</div>
+              </div>
+              <div class="road-arrow">←</div>
+            </div>
+            <div id="road-right" class="road-path">
+              <div class="road-card panel">
+                <div class="road-tag tag-claude">CLAUDE</div>
+                <div class="road-text">Cloud 基本功</div>
+              </div>
+              <div class="road-card panel">
+                <div class="road-tag tag-claude">CLAUDE</div>
+                <div class="road-text">GitHub 應用相同</div>
+              </div>
+              <div class="road-card panel">
+                <div class="road-tag tag-claude">CLAUDE</div>
+                <div class="road-text">懶人包可共通</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SCENE 7 – BROLL_17: Shared Template (108.52–126.36s)
+           ============================================================ -->
+      <section
+        id="s7"
+        class="scene clip"
+        data-start="108.52"
+        data-duration="17.84"
+        data-track-index="1"
+        data-broll-id="BROLL_17"
+        data-source-start="00:05:20,720"
+        data-source-end="00:05:38,560"
+      >
+        <div class="scene-content">
+          <div>
+            <div class="label">BROLL_17 / SHARED TEMPLATE</div>
+            <h2 class="headline">通用懶人包<br /><span class="accent-green">Codex + Claude</span></h2>
+          </div>
+          <div class="tmpl-stage">
+            <div id="tb-codex" class="tool-box panel tool-box-codex">
+              <div class="tool-box-tag">CODEX</div>
+              <div class="tool-box-name">Codex</div>
+              <div class="tool-box-sub">OpenAI Agent</div>
+            </div>
+            <div id="tmpl-arrow-l" class="tmpl-arrow">→</div>
+            <div id="tmpl-center" class="tmpl-card">
+              <div class="tmpl-header">SHARED MODULE</div>
+              <div class="tmpl-title">通用懶人包</div>
+              <div class="tmpl-module">
+                <div class="tmpl-module-dot"></div>
+                <div class="tmpl-module-text">GitHub 模組</div>
+              </div>
+              <div class="tmpl-module">
+                <div class="tmpl-module-dot"></div>
+                <div class="tmpl-module-text">Obsidian 模組</div>
+              </div>
+              <div class="tmpl-module">
+                <div class="tmpl-module-dot"></div>
+                <div class="tmpl-module-text">MCP 連接器</div>
+              </div>
+            </div>
+            <div id="tmpl-arrow-r" class="tmpl-arrow">←</div>
+            <div id="tb-claude" class="tool-box panel tool-box-claude">
+              <div class="tool-box-tag">CLAUDE</div>
+              <div class="tool-box-name">Claude</div>
+              <div class="tool-box-sub">Anthropic Agent</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SCENE 8 – BROLL_18: Final CTA (126.36–142.84s)
+           ============================================================ -->
+      <section
+        id="s8"
+        class="scene clip"
+        data-start="126.36"
+        data-duration="16.48"
+        data-track-index="1"
+        data-broll-id="BROLL_18"
+        data-source-start="00:05:38,560"
+        data-source-end="00:05:55,040"
+      >
+        <div class="scene-content">
+          <div>
+            <div class="label">BROLL_18 / FINAL CTA</div>
+            <h2 class="headline" style="font-size:76px">為你的 Agent 裝上<br /><span class="accent-blue">第二大腦</span> + <span class="accent-green">程式倉庫</span></h2>
+          </div>
+          <div class="cta-stage">
+            <div class="cta-agent-row">
+              <div id="cta-obsidian" class="cta-tool obsidian panel">
+                <div class="cta-tool-tag">SECOND BRAIN</div>
+                <div class="cta-tool-name">Obsidian</div>
+              </div>
+              <div id="cta-conn-l" class="cta-conn"></div>
+              <div id="cta-hub" class="cta-hub">
+                <div class="cta-hub-label">AI AGENT</div>
+                <div class="cta-hub-title">Codex</div>
+              </div>
+              <div id="cta-conn-r" class="cta-conn right"></div>
+              <div id="cta-github" class="cta-tool github panel">
+                <div class="cta-tool-tag">CODE REPO</div>
+                <div class="cta-tool-name">GitHub</div>
+              </div>
+            </div>
+            <div id="cta-buttons" class="cta-buttons">
+              <div class="cta-btn subscribe">訂閱</div>
+              <div class="cta-btn like">按讚</div>
+              <div class="cta-btn share">分享</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div id="transition-wipe" data-layout-ignore="true"></div>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({
+        paused: true,
+        defaults: { ease: "power3.out" },
+      });
+
+      const sceneIds = ["#s1", "#s2", "#s3", "#s4", "#s5", "#s6", "#s7", "#s8"];
+      tl.set(sceneIds, { autoAlpha: 0 }, 0);
+      tl.set("#s1", { autoAlpha: 1 }, 0);
+      tl.set("#scan", { y: -220 }, 0);
+
+      /* ── SCENE 1: BROLL_11 (0–26.08s) ───────────────────────── */
+      tl.from("#brand-bug", { opacity: 0, y: -18, duration: 0.35 }, 0.18);
+      tl.from("#s1 .label", { opacity: 0, x: -36, duration: 0.35, ease: "expo.out" }, 0.28);
+      tl.from("#s1 .headline", { opacity: 0, y: 42, scale: 0.97, duration: 0.6 }, 0.55);
+      tl.from("#s1 .subline", { opacity: 0, y: 20, duration: 0.35, ease: "power2.out" }, 1.2);
+      tl.from("#step1", { opacity: 0, x: 50, duration: 0.5, ease: "expo.out" }, 0.45);
+      tl.from("#step2", { opacity: 0, x: 50, duration: 0.5, ease: "expo.out" }, 0.72);
+      tl.from("#step3", { opacity: 0, x: 50, duration: 0.5, ease: "expo.out" }, 0.99);
+      tl.to("#step1", { scale: 1.02, duration: 0.55, yoyo: true, repeat: 5, ease: "sine.inOut" }, 3.2);
+      tl.to("#step3", { boxShadow: "0 0 40px rgba(163,230,53,0.3), 0 24px 80px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08)", duration: 0.9, yoyo: true, repeat: 8, ease: "sine.inOut" }, 4.0);
+
+      /* ── SCENE 2: BROLL_12 (26.08–42.18s) ───────────────────── */
+      tl.set("#s1", { autoAlpha: 0 }, 26.02);
+      tl.set("#s2", { autoAlpha: 1 }, 26.08);
+      tl.from("#s2 .label", { opacity: 0, x: -34, duration: 0.3, ease: "expo.out" }, 26.12);
+      tl.from("#s2 .headline", { opacity: 0, y: 34, scale: 0.98, duration: 0.5 }, 26.26);
+      tl.from("#rc1", { opacity: 0, scale: 0.9, duration: 0.45, ease: "back.out(1.6)" }, 26.72);
+      tl.from("#ra1", { opacity: 0, scaleX: 0, transformOrigin: "left center", duration: 0.3 }, 27.2);
+      tl.from("#rc2", { opacity: 0, x: 40, duration: 0.45, ease: "power3.out" }, 27.5);
+      tl.from("#ra2", { opacity: 0, scaleX: 0, transformOrigin: "left center", duration: 0.3 }, 27.98);
+      tl.from("#rc3", { opacity: 0, x: 40, duration: 0.45, ease: "power3.out" }, 28.28);
+      tl.to("#rc1", { scale: 1.04, duration: 0.7, yoyo: true, repeat: 5, ease: "sine.inOut" }, 29.5);
+
+      /* ── SCENE 3: BROLL_13 (42.18–64.92s) ───────────────────── */
+      tl.set("#s2", { autoAlpha: 0 }, 42.12);
+      tl.set("#s3", { autoAlpha: 1 }, 42.18);
+      tl.set("#commit-card", { autoAlpha: 0 }, 42.2);
+      tl.from("#s3 .label", { opacity: 0, x: -34, duration: 0.3, ease: "expo.out" }, 42.22);
+      tl.from("#s3 .headline", { opacity: 0, y: 34, duration: 0.5 }, 42.36);
+      tl.from("#s3 .subline", { opacity: 0, y: 18, duration: 0.35, ease: "power2.out" }, 42.88);
+      tl.from("#diff-panel", { opacity: 0, x: 55, scale: 0.97, duration: 0.55, ease: "expo.out" }, 42.72);
+      tl.from("#dl1, #dl3", { opacity: 0, x: -20, stagger: 0.2, duration: 0.4, ease: "power2.out" }, 43.4);
+      tl.from("#dl2, #dl4, #dl5", { opacity: 0, x: 20, stagger: 0.24, duration: 0.4, ease: "power2.out" }, 44.0);
+      tl.to("#commit-card", { autoAlpha: 1, y: 0, duration: 0.5, ease: "back.out(1.6)" }, 46.5);
+      tl.to("#diff-panel", { scale: 1.01, duration: 0.8, yoyo: true, repeat: 6, ease: "sine.inOut" }, 48.0);
+
+      /* ── SCENE 4: BROLL_14 (64.92–81.76s) ───────────────────── */
+      tl.set("#s3", { autoAlpha: 0 }, 64.86);
+      tl.set("#s4", { autoAlpha: 1 }, 64.92);
+      tl.from("#s4 .label", { opacity: 0, x: -34, duration: 0.3, ease: "expo.out" }, 64.96);
+      tl.from("#s4 .headline", { opacity: 0, y: 34, duration: 0.5 }, 65.1);
+      tl.from("#s4 .subline", { opacity: 0, y: 18, duration: 0.35, ease: "power2.out" }, 65.62);
+      tl.from("#kp", { opacity: 0, x: 55, scale: 0.97, duration: 0.55, ease: "expo.out" }, 65.46);
+      tl.from("#kn1", { opacity: 0, x: 30, duration: 0.4, ease: "power2.out" }, 66.1);
+      tl.from("#kn2", { opacity: 0, x: 30, duration: 0.4, ease: "power2.out" }, 66.38);
+      tl.from("#kn3, #kn4", { opacity: 0, x: 22, stagger: 0.18, duration: 0.38, ease: "power2.out" }, 66.72);
+      tl.to("#kn1 .kp-node-dot, #kn2 .kp-node-dot", { scale: 1.3, duration: 0.55, yoyo: true, repeat: 8, stagger: 0.4, ease: "sine.inOut" }, 67.5);
+
+      /* ── SCENE 5: BROLL_15 (81.76–92.32s) ───────────────────── */
+      tl.set("#s4", { autoAlpha: 0 }, 81.7);
+      tl.set("#s5", { autoAlpha: 1 }, 81.76);
+      tl.from("#s5 .label", { opacity: 0, x: -34, duration: 0.3, ease: "expo.out" }, 81.8);
+      tl.from("#s5 .headline", { opacity: 0, y: 34, duration: 0.5 }, 81.94);
+      tl.from("#tl-github", { opacity: 0, x: -40, duration: 0.45, ease: "expo.out" }, 82.5);
+      tl.from("#tl-obsidian", { opacity: 0, x: 40, duration: 0.45, ease: "expo.out" }, 82.72);
+      tl.from("#vert-lines .vert-line", { scaleY: 0, transformOrigin: "top center", stagger: 0.18, duration: 0.4, ease: "power2.out" }, 83.2);
+      tl.from("#project-row .project-chip", { opacity: 0, y: 24, stagger: 0.18, duration: 0.4, ease: "power2.out" }, 83.78);
+      tl.to("#tl-github, #tl-obsidian", { scale: 1.03, duration: 0.65, yoyo: true, repeat: 4, ease: "sine.inOut" }, 84.5);
+
+      /* ── SCENE 6: BROLL_16 (92.32–108.52s) ──────────────────── */
+      tl.set("#s5", { autoAlpha: 0 }, 92.26);
+      tl.set("#s6", { autoAlpha: 1 }, 92.32);
+      tl.from("#s6 .label", { opacity: 0, x: -34, duration: 0.3, ease: "expo.out" }, 92.36);
+      tl.from("#s6 .headline", { opacity: 0, y: 34, duration: 0.5 }, 92.5);
+      tl.from("#road-left", { opacity: 0, x: -50, duration: 0.52, ease: "expo.out" }, 93.0);
+      tl.from("#road-right", { opacity: 0, x: 50, duration: 0.52, ease: "expo.out" }, 93.22);
+      tl.from("#road-center", { opacity: 0, scale: 0.88, duration: 0.48, ease: "back.out(1.6)" }, 93.52);
+      tl.to("#road-center .hub-badge", { scale: 1.04, duration: 0.75, yoyo: true, repeat: 8, ease: "sine.inOut" }, 94.5);
+
+      /* ── SCENE 7: BROLL_17 (108.52–126.36s) ─────────────────── */
+      tl.set("#s6", { autoAlpha: 0 }, 108.46);
+      tl.set("#s7", { autoAlpha: 1 }, 108.52);
+      tl.from("#s7 .label", { opacity: 0, x: -34, duration: 0.3, ease: "expo.out" }, 108.56);
+      tl.from("#s7 .headline", { opacity: 0, y: 34, duration: 0.5 }, 108.7);
+      tl.from("#tmpl-center", { scale: 0, duration: 0.48, ease: "back.out(1.8)" }, 109.2);
+      tl.from("#tb-codex", { opacity: 0, x: -50, duration: 0.5, ease: "expo.out" }, 109.72);
+      tl.from("#tb-claude", { opacity: 0, x: 50, duration: 0.5, ease: "expo.out" }, 109.94);
+      tl.from("#tmpl-arrow-l", { opacity: 0, scaleX: 0, transformOrigin: "right center", duration: 0.38 }, 110.3);
+      tl.from("#tmpl-arrow-r", { opacity: 0, scaleX: 0, transformOrigin: "left center", duration: 0.38 }, 110.52);
+      tl.to("#tmpl-center", { scale: 1.02, duration: 0.7, yoyo: true, repeat: 8, ease: "sine.inOut" }, 111.5);
+      tl.to("#tmpl-center .tmpl-module", { borderColor: "rgba(163,230,53,0.5)", duration: 0.5, yoyo: true, stagger: 0.4, repeat: 3, ease: "sine.inOut" }, 112.0);
+
+      /* ── SCENE 8: BROLL_18 (126.36–142.84s) ─────────────────── */
+      tl.set("#s7", { autoAlpha: 0 }, 126.3);
+      tl.set("#s8", { autoAlpha: 1 }, 126.36);
+      tl.set("#cta-buttons", { autoAlpha: 0, y: 18 }, 126.38);
+      tl.from("#s8 .label", { opacity: 0, x: -34, duration: 0.3, ease: "expo.out" }, 126.4);
+      tl.from("#s8 .headline", { opacity: 0, y: 34, duration: 0.5 }, 126.54);
+      tl.from("#cta-hub", { scale: 0, duration: 0.48, ease: "back.out(1.8)" }, 127.06);
+      tl.from("#cta-obsidian", { opacity: 0, x: -55, duration: 0.5, ease: "expo.out" }, 127.58);
+      tl.from("#cta-github", { opacity: 0, x: 55, duration: 0.5, ease: "expo.out" }, 127.8);
+      tl.from(
+        "#cta-conn-l",
+        { scaleX: 0, transformOrigin: "right center", duration: 0.4, ease: "power2.out" },
+        128.14,
+      );
+      tl.from(
+        "#cta-conn-r",
+        { scaleX: 0, transformOrigin: "left center", duration: 0.4, ease: "power2.out" },
+        128.36,
+      );
+      tl.to("#cta-buttons", { autoAlpha: 1, y: 0, duration: 0.5, ease: "back.out(1.6)" }, 129.0);
+      tl.to("#cta-hub", { scale: 1.04, duration: 0.8, yoyo: true, repeat: 7, ease: "sine.inOut" }, 129.5);
+      tl.to(
+        "#cta-conn-l, #cta-conn-r",
+        { opacity: 0.5, duration: 0.7, yoyo: true, repeat: 8, ease: "sine.inOut" },
+        130.0,
+      );
+      /* Final scene: subtle fade-out of whole scene at end */
+      tl.to("#s8", { opacity: 0.85, duration: 3, ease: "power2.in" }, 139.8);
+
+      /* ── TRANSITIONS ─────────────────────────────────────────── */
+      [25.2, 41.3, 64.1, 81.0, 91.5, 107.7, 125.5].forEach((t) => {
+        tl.fromTo(
+          "#transition-wipe",
+          { x: 0 },
+          { x: 4320, duration: 0.55, ease: "power2.inOut" },
+          t,
+        );
+      });
+
+      tl.to("#scan", { y: 1180, duration: 142.0, ease: "none" }, 0);
+      tl.to({}, { duration: 0.01 }, 142.84);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>

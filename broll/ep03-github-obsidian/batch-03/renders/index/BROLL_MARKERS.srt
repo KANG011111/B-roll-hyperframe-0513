@@ -1,0 +1,31 @@
+1
+00:03:20,920 --> 00:03:47,000
+BROLL_11 | GitHub 設備碼 OAuth 連線成功 | file: BROLL_11_032092-034700_secure-login-flow-github.mp4
+
+2
+00:03:50,760 --> 00:04:06,860
+BROLL_12 | 重啟 Codex 測試 GitHub 懶人包 2.5 | file: BROLL_12_035076-040686_restart-codex-reopen-project.mp4
+
+3
+00:04:11,760 --> 00:04:34,500
+BROLL_13 | Codex 更新 GitHub 文件 | file: BROLL_13_041176-043450_ai-agent-updates-markdown.mp4
+
+4
+00:04:36,600 --> 00:04:53,440
+BROLL_14 | Codex 讀取 Obsidian 筆記 | file: BROLL_14_043660-044544_obsidian-note-graph-codex.mp4
+
+5
+00:04:53,440 --> 00:05:04,000
+BROLL_15 | 全域工具跨專案共用 | file: BROLL_15_044544-045040_system-architecture-global-tools.mp4
+
+6
+00:05:04,000 --> 00:05:20,200
+BROLL_16 | 延伸學習路線圖 | file: BROLL_16_045040-052020_learning-roadmap-codex-claude.mp4
+
+7
+00:05:20,720 --> 00:05:38,560
+BROLL_17 | 通用懶人包模板 Codex + Claude | file: BROLL_17_052072-053856_shared-lazy-pack-template.mp4
+
+8
+00:05:38,560 --> 00:05:55,040
+BROLL_18 | 最終 CTA：訂閱按讚分享 | file: BROLL_18_053856-055504_final-cta-agent-hub.mp4
