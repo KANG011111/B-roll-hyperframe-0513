@@ -1,0 +1,119 @@
+{
+    "project":  "EP03 GitHub Obsidian",
+    "batch":  "BROLL_BATCH_03",
+    "editor_targets":  [
+                           "CapCut",
+                           "Filmora"
+                       ],
+    "canvas":  "1920x1080",
+    "fps":  30,
+    "default_handle_seconds":  0.3,
+    "full_render":  "../full/BROLL_BATCH_03_FULL.mp4",
+    "clips_dir":  "../clips",
+    "segments":  [
+                     {
+                         "id":  "BROLL_11",
+                         "source_start":  "00:03:20,920",
+                         "source_end":  "00:03:47,000",
+                         "render_start":  "00:00:00,000",
+                         "render_end":  "00:00:26,080",
+                         "duration_seconds":  26.08,
+                         "type":  "工具介面動畫",
+                         "title":  "GitHub 設備碼 OAuth 連線成功",
+                         "slug":  "secure-login-flow-github",
+                         "source_srt":  "GitHub Continue／複製登入碼／Email 認證／成功連接 GitHub",
+                         "output_file":  "BROLL_11_032092-034700_secure-login-flow-github.mp4"
+                     },
+                     {
+                         "id":  "BROLL_12",
+                         "source_start":  "00:03:50,760",
+                         "source_end":  "00:04:06,860",
+                         "render_start":  "00:00:26,080",
+                         "render_end":  "00:00:42,180",
+                         "duration_seconds":  16.1,
+                         "type":  "資訊圖解",
+                         "title":  "重啟 Codex 測試 GitHub 懶人包 2.5",
+                         "slug":  "restart-codex-reopen-project",
+                         "source_srt":  "關掉 Codex／重新開啟／回到對話／找到 Codex 懶人包 2.5",
+                         "output_file":  "BROLL_12_035076-040686_restart-codex-reopen-project.mp4"
+                     },
+                     {
+                         "id":  "BROLL_13",
+                         "source_start":  "00:04:11,760",
+                         "source_end":  "00:04:34,500",
+                         "render_start":  "00:00:42,180",
+                         "render_end":  "00:01:04,920",
+                         "duration_seconds":  22.74,
+                         "type":  "混合",
+                         "title":  "Codex 更新 GitHub 文件",
+                         "slug":  "ai-agent-updates-markdown",
+                         "source_srt":  "把踩到的坑更新到 GitHub Codex 懶人包 2.5",
+                         "output_file":  "BROLL_13_041176-043450_ai-agent-updates-markdown.mp4"
+                     },
+                     {
+                         "id":  "BROLL_14",
+                         "source_start":  "00:04:36,600",
+                         "source_end":  "00:04:53,440",
+                         "render_start":  "00:01:04,920",
+                         "render_end":  "00:01:21,760",
+                         "duration_seconds":  16.84,
+                         "type":  "文件流程",
+                         "title":  "Codex 讀取 Obsidian 筆記",
+                         "slug":  "obsidian-note-graph-codex",
+                         "source_srt":  "讀 Obsidian 筆記本／看 Codex 懶人包筆記／完成更新",
+                         "output_file":  "BROLL_14_043660-044544_obsidian-note-graph-codex.mp4"
+                     },
+                     {
+                         "id":  "BROLL_15",
+                         "source_start":  "00:04:53,440",
+                         "source_end":  "00:05:04,000",
+                         "render_start":  "00:01:21,760",
+                         "render_end":  "00:01:32,320",
+                         "duration_seconds":  10.56,
+                         "type":  "資訊圖解",
+                         "title":  "全域工具跨專案共用",
+                         "slug":  "system-architecture-global-tools",
+                         "source_srt":  "GitHub 跟 Obsidian 這兩個工具都是全域可用／跨專案",
+                         "output_file":  "BROLL_15_044544-045040_system-architecture-global-tools.mp4"
+                     },
+                     {
+                         "id":  "BROLL_16",
+                         "source_start":  "00:05:04,000",
+                         "source_end":  "00:05:20,200",
+                         "render_start":  "00:01:32,320",
+                         "render_end":  "00:01:48,520",
+                         "duration_seconds":  16.2,
+                         "type":  "資訊圖解",
+                         "title":  "延伸學習路線圖",
+                         "slug":  "learning-roadmap-codex-claude",
+                         "source_srt":  "想知道更多 GitHub 跟 Obsidian 應用／推薦看 Cloud 基本功",
+                         "output_file":  "BROLL_16_045040-052020_learning-roadmap-codex-claude.mp4"
+                     },
+                     {
+                         "id":  "BROLL_17",
+                         "source_start":  "00:05:20,720",
+                         "source_end":  "00:05:38,560",
+                         "render_start":  "00:01:48,520",
+                         "render_end":  "00:02:06,360",
+                         "duration_seconds":  17.84,
+                         "type":  "資訊圖解",
+                         "title":  "通用懶人包模板 Codex + Claude",
+                         "slug":  "shared-lazy-pack-template",
+                         "source_srt":  "第六集看 GitHub／第八集看 Obsidian／Codex 跟 Cloud 懶人包可以共通",
+                         "output_file":  "BROLL_17_052072-053856_shared-lazy-pack-template.mp4"
+                     },
+                     {
+                         "id":  "BROLL_18",
+                         "source_start":  "00:05:38,560",
+                         "source_end":  "00:05:55,040",
+                         "render_start":  "00:02:06,360",
+                         "render_end":  "00:02:22,840",
+                         "duration_seconds":  16.48,
+                         "type":  "混合",
+                         "title":  "最終 CTA：訂閱按讚分享",
+                         "slug":  "final-cta-agent-hub",
+                         "source_srt":  "為你的 Agent 接上第二大腦跟程式倉庫／訂閱按讚分享",
+                         "output_file":  "BROLL_18_053856-055504_final-cta-agent-hub.mp4"
+                     }
+                 ]
+}
