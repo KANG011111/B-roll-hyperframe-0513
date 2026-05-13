@@ -1,0 +1,13 @@
+
+> dev
+> npx --yes hyperframes@0.5.7 preview
+
+T  hyperframes preview
+[?25l|
+o  Already running
+[?25h
+  Project   tiktok-hook
+  Studio    http://localhost:3002
+
+  Reusing existing server. Use --force-new to start a fresh instance.
+

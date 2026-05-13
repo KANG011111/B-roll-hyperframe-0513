@@ -1,0 +1,6 @@
+﻿"id","source_start","source_end","render_start","render_end","duration_seconds","type","title","output_file","editor_note"
+"BROLL_06","00:00:59,820","00:01:14,620","00:00:00,000","00:00:14,800","14.8","工具介面動畫","Codex 新專案與重新命名","BROLL_06_005982-011462_app-interface-mockup-codex.mp4","Import BROLL_MARKERS.srt, then align this clip to marker BROLL_06."
+"BROLL_07","00:01:18,580","00:01:33,600","00:00:14,800","00:00:29,820","15.02","文件流程","Markdown 拖進 Codex 對話視窗","BROLL_07_011858-013360_instructional-markdown-document-dragged.mp4","Import BROLL_MARKERS.srt, then align this clip to marker BROLL_07."
+"BROLL_08","00:01:39,340","00:01:58,220","00:00:29,820","00:00:48,700","18.88","混合","GitHub CLI 與 Obsidian MCP Vault 雙支線","BROLL_08_013934-015822_split-diagram-left-branch.mp4","Import BROLL_MARKERS.srt, then align this clip to marker BROLL_08."
+"BROLL_09","00:02:04,740","00:02:24,020","00:00:48,700","00:01:07,980","19.28","資訊圖解","人類登入驗證 vs Codex 自動安裝","BROLL_09_020474-022402_comparison-infographic-left-column.mp4","Import BROLL_MARKERS.srt, then align this clip to marker BROLL_09."
+"BROLL_10","00:02:54,380","00:03:17,120","00:01:07,980","00:01:30,720","22.74","工具介面動畫","Obsidian MCP Vault 連接流程","BROLL_10_025438-031712_cloud-drive-connects-obsidian.mp4","Import BROLL_MARKERS.srt, then align this clip to marker BROLL_10."

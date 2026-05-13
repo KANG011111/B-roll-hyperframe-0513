@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #000814;
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        background: #000814;
+        overflow: hidden;
+      }
+
+      /* ── Layer 1: radial background glow ────────────────────── */
+      #bg-glow {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse 1100px 720px at 50% 50%, #001d3d 0%, transparent 68%);
+        z-index: 1;
+        transform-origin: center center;
+      }
+
+      /* ── Layer 2: oversized decorative watermark ─────────────── */
+      #watermark {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: "Inter", system-ui, sans-serif;
+        font-weight: 900;
+        font-size: 520px;
+        letter-spacing: -0.04em;
+        color: #001d3d;
+        white-space: nowrap;
+        z-index: 2;
+        line-height: 1;
+        user-select: none;
+      }
+
+      /* ── Layer 3: right gold accent bar ─────────────────────── */
+      #right-panel {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 5px;
+        height: 1080px;
+        background: linear-gradient(180deg, transparent 5%, #ffc300 35%, #ffd60a 65%, transparent 95%);
+        z-index: 10;
+        transform-origin: top center;
+      }
+
+      /* ── Layer 4: main content zone ─────────────────────────── */
+      .scene-content {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 0 200px;
+        z-index: 10;
+      }
+
+      #label {
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 0.35em;
+        text-transform: uppercase;
+        color: #ffc300;
+        margin-bottom: 24px;
+      }
+
+      #accent-line {
+        width: 400px;
+        height: 2px;
+        background: linear-gradient(90deg, #ffc300, #ffd60a 70%, transparent);
+        margin-bottom: 44px;
+        transform-origin: left center;
+      }
+
+      #main-title {
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 168px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: #ffffff;
+        line-height: 0.92;
+        margin-bottom: 36px;
+        max-width: 1300px;
+      }
+
+      #tagline {
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 36px;
+        font-weight: 300;
+        letter-spacing: 0.1em;
+        color: #778da9;
+      }
+
+      /* ── Layer 5: corner date mark ───────────────────────────── */
+      #corner-mark {
+        position: absolute;
+        bottom: 72px;
+        right: 200px;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.28em;
+        color: #415a77;
+        text-transform: uppercase;
+        z-index: 10;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="10"
+      data-width="1920"
+      data-height="1080"
+    >
+      <!-- Background music -->
+      <audio id="bg-music" data-start="0" data-duration="10"
+             data-track-index="0" data-volume="0.22"
+             src="Glasswing Drift.mp3"></audio>
+
+      <!-- Layer 1: radial glow -->
+      <div id="bg-glow"></div>
+
+      <!-- Layer 2: oversized watermark (excluded from layout audit) -->
+      <div id="watermark" data-layout-ignore>PRODUCT</div>
+
+      <!-- Layer 3: right accent bar -->
+      <div id="right-panel"></div>
+
+      <!-- Layer 4: main content -->
+      <div class="scene-content">
+        <div id="label">Introducing</div>
+        <div id="accent-line"></div>
+        <h1 id="main-title">Your Product</h1>
+        <p id="tagline">Redefine what's possible.</p>
+      </div>
+
+      <!-- Layer 5: corner mark -->
+      <div id="corner-mark">2024</div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // ── BUILD (0–2.5s): elements enter staggered ─────────────────────────
+
+      // BG glow — opacity only (scale managed separately in breathe)
+      tl.fromTo("#bg-glow",
+        { opacity: 0 },
+        { opacity: 1, duration: 1.8, ease: "power1.out" },
+        0.1
+      );
+
+      // Watermark — opacity only; CSS translate(-50%,-50%) is never touched by GSAP
+      tl.fromTo("#watermark",
+        { opacity: 0 },
+        { opacity: 0.07, duration: 2.0, ease: "power2.out" },
+        0.15
+      );
+
+      // Right accent bar — scaleY from top
+      tl.fromTo("#right-panel",
+        { scaleY: 0, opacity: 0 },
+        { scaleY: 1, opacity: 1, duration: 1.1, ease: "expo.out" },
+        0.2
+      );
+
+      // Accent line — scaleX from left (matches CSS transform-origin: left center)
+      tl.fromTo("#accent-line",
+        { scaleX: 0, opacity: 0 },
+        { scaleX: 1, opacity: 1, duration: 0.85, ease: "expo.out" },
+        0.45
+      );
+
+      // "INTRODUCING" label — rise up
+      tl.fromTo("#label",
+        { opacity: 0, y: 22 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
+        0.6
+      );
+
+      // Main title — rises from below (most important: leads the content)
+      tl.fromTo("#main-title",
+        { opacity: 0, y: 72 },
+        { opacity: 1, y: 0, duration: 1.0, ease: "expo.out" },
+        0.9
+      );
+
+      // Tagline — slides in from right
+      tl.fromTo("#tagline",
+        { opacity: 0, x: 50 },
+        { opacity: 1, x: 0, duration: 0.75, ease: "power3.out" },
+        1.7
+      );
+
+      // Corner mark — soft fade (last, lowest hierarchy)
+      tl.fromTo("#corner-mark",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.55, ease: "power2.out" },
+        2.4
+      );
+
+      // ── BREATHE (2.0–8.0s): one ambient motion, glow pulse ───────────────
+      // repeat: 2 → 3 plays × 2.0s = 6.0s total → starts t=2.0, ends t=8.0
+      // (clear of both the build end ~t=1.9 and the resolve start at t=8.4)
+      tl.to("#bg-glow", {
+        scale: 1.07,
+        opacity: 0.7,
+        yoyo: true,
+        repeat: 2,
+        duration: 2.0,
+        ease: "sine.inOut",
+      }, 2.0);
+
+      // ── RESOLVE (8.4–10s): fade to black ─────────────────────────────────
+      // Fastest exits first (small elements), slowest last (hero title + glow)
+      tl.to("#label",       { opacity: 0, duration: 0.45, ease: "power2.in"  }, 8.4);
+      tl.to("#corner-mark", { opacity: 0, duration: 0.4,  ease: "power1.in"  }, 8.45);
+      tl.to("#accent-line", { scaleX: 0, opacity: 0, duration: 0.55, ease: "power2.in" }, 8.5);
+      tl.to("#right-panel", { scaleY: 0, opacity: 0, duration: 0.65, ease: "power2.in" }, 8.5);
+      tl.to("#tagline",     { opacity: 0, x: -30, duration: 0.5, ease: "power2.in" }, 8.55);
+      tl.to("#main-title",  { opacity: 0, y: -40, duration: 0.7, ease: "power3.in" }, 8.65);
+      tl.to("#bg-glow",     { opacity: 0, scale: 1, duration: 1.0, ease: "power1.in" }, 9.0);
+      tl.to("#watermark",   { opacity: 0, duration: 0.8, ease: "power1.in"  }, 9.0);
+
+      // Deterministic hard-kill at boundary
+      tl.set("#bg-glow",   { opacity: 0, scale: 1 }, 10);
+      tl.set("#watermark", { opacity: 0 },           10);
+
+      // Sentinel: pin timeline at full 10s
+      tl.set({}, {}, 10);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

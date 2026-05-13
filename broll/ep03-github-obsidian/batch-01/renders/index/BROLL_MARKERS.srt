@@ -1,0 +1,20 @@
+﻿1
+00:00:00,000 --> 00:00:07,520
+BROLL_01 | EP03 主題開場：Agent 接上第二大腦與程式倉庫 | file: BROLL_01_000000-000752_navy-central-agent-terminal.mp4
+
+2
+00:00:08,180 --> 00:00:16,100
+BROLL_02 | Obsidian、GitHub、Codex 懶人包 2.5 三工具介紹 | file: BROLL_02_000818-001610_three-large-tool-cards.mp4
+
+3
+00:00:16,100 --> 00:00:22,820
+BROLL_03 | 下載 Markdown 懶人包 | file: BROLL_03_001610-002282_screen-style-browser-top-right-download.mp4
+
+4
+00:00:22,820 --> 00:00:32,180
+BROLL_04 | 前置條件 Checklist | file: BROLL_04_002282-003218_checklist-infographic-navy-grid.mp4
+
+5
+00:00:32,180 --> 00:00:50,400
+BROLL_05 | 前集學習路線圖 | file: BROLL_05_003218-005040_learning-path-timeline-youtube.mp4
+

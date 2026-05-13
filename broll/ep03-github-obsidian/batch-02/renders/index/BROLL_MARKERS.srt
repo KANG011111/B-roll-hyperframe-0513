@@ -1,0 +1,20 @@
+﻿1
+00:00:59,820 --> 00:01:14,620
+BROLL_06 | Codex 新專案與重新命名 | file: BROLL_06_005982-011462_app-interface-mockup-codex.mp4
+
+2
+00:01:18,580 --> 00:01:33,600
+BROLL_07 | Markdown 拖進 Codex 對話視窗 | file: BROLL_07_011858-013360_instructional-markdown-document-dragged.mp4
+
+3
+00:01:39,340 --> 00:01:58,220
+BROLL_08 | GitHub CLI 與 Obsidian MCP Vault 雙支線 | file: BROLL_08_013934-015822_split-diagram-left-branch.mp4
+
+4
+00:02:04,740 --> 00:02:24,020
+BROLL_09 | 人類登入驗證 vs Codex 自動安裝 | file: BROLL_09_020474-022402_comparison-infographic-left-column.mp4
+
+5
+00:02:54,380 --> 00:03:17,120
+BROLL_10 | Obsidian MCP Vault 連接流程 | file: BROLL_10_025438-031712_cloud-drive-connects-obsidian.mp4
+

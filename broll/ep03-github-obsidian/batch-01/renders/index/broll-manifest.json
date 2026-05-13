@@ -1,0 +1,80 @@
+﻿{
+    "project":  "EP03 GitHub Obsidian",
+    "batch":  "BROLL_BATCH_01",
+    "editor_targets":  [
+                           "CapCut",
+                           "Filmora"
+                       ],
+    "canvas":  "1920x1080",
+    "fps":  30,
+    "default_handle_seconds":  0.3,
+    "full_render":  "../full/BROLL_BATCH_01_FULL.mp4",
+    "clips_dir":  "../clips",
+    "segments":  [
+                     {
+                         "id":  "BROLL_01",
+                         "source_start":  "00:00:00,000",
+                         "source_end":  "00:00:07,520",
+                         "render_start":  "00:00:00,000",
+                         "render_end":  "00:00:07,520",
+                         "duration_seconds":  7.52,
+                         "type":  "混合",
+                         "title":  "EP03 主題開場：Agent 接上第二大腦與程式倉庫",
+                         "slug":  "navy-central-agent-terminal",
+                         "source_srt":  "GPT CODEX 基本功 EP03／為你的Aging裝上第二大腦與程式倉庫",
+                         "output_file":  "BROLL_01_000000-000752_navy-central-agent-terminal.mp4"
+                     },
+                     {
+                         "id":  "BROLL_02",
+                         "source_start":  "00:00:08,180",
+                         "source_end":  "00:00:16,100",
+                         "render_start":  "00:00:08,180",
+                         "render_end":  "00:00:16,100",
+                         "duration_seconds":  7.92,
+                         "type":  "工具介面動畫",
+                         "title":  "Obsidian、GitHub、Codex 懶人包 2.5 三工具介紹",
+                         "slug":  "three-large-tool-cards",
+                         "source_srt":  "這一集直接教你們裝 Obsidian 跟 GitHub／Codex懶人包2.5",
+                         "output_file":  "BROLL_02_000818-001610_three-large-tool-cards.mp4"
+                     },
+                     {
+                         "id":  "BROLL_03",
+                         "source_start":  "00:00:16,100",
+                         "source_end":  "00:00:22,820",
+                         "render_start":  "00:00:16,100",
+                         "render_end":  "00:00:22,820",
+                         "duration_seconds":  6.72,
+                         "type":  "文件流程",
+                         "title":  "下載 Markdown 懶人包",
+                         "slug":  "screen-style-browser-top-right-download",
+                         "source_srt":  "右上角選擇下載／下載完成他是一個 markdown 的檔案",
+                         "output_file":  "BROLL_03_001610-002282_screen-style-browser-top-right-download.mp4"
+                     },
+                     {
+                         "id":  "BROLL_04",
+                         "source_start":  "00:00:22,820",
+                         "source_end":  "00:00:32,180",
+                         "render_start":  "00:00:22,820",
+                         "render_end":  "00:00:32,180",
+                         "duration_seconds":  9.36,
+                         "type":  "資訊圖解",
+                         "title":  "前置條件 Checklist",
+                         "slug":  "checklist-infographic-navy-grid",
+                         "source_srt":  "打開你的 Codex／先安裝 Obsidian／註冊 GitHub",
+                         "output_file":  "BROLL_04_002282-003218_checklist-infographic-navy-grid.mp4"
+                     },
+                     {
+                         "id":  "BROLL_05",
+                         "source_start":  "00:00:32,180",
+                         "source_end":  "00:00:50,400",
+                         "render_start":  "00:00:32,180",
+                         "render_end":  "00:00:50,400",
+                         "duration_seconds":  18.22,
+                         "type":  "資訊圖解",
+                         "title":  "前集學習路線圖",
+                         "slug":  "learning-path-timeline-youtube",
+                         "source_srt":  "播放清單裡面有教你如何安裝 Obsidian 跟註冊 GitHub",
+                         "output_file":  "BROLL_05_003218-005040_learning-path-timeline-youtube.mp4"
+                     }
+                 ]
+}

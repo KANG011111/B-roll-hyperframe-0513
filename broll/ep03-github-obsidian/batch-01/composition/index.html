@@ -1,0 +1,817 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #0b1020;
+        font-family:
+          "Noto Sans TC",
+          "Microsoft JhengHei",
+          "PingFang TC",
+          system-ui,
+          sans-serif;
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        color: #ffffff;
+        background:
+          radial-gradient(circle at 18% 18%, rgba(56, 189, 248, 0.26), transparent 28%),
+          radial-gradient(circle at 84% 74%, rgba(168, 85, 247, 0.28), transparent 30%),
+          linear-gradient(135deg, #0b1020 0%, #111027 48%, #15171f 100%);
+      }
+
+      #grid,
+      #scan,
+      #brand-bug,
+      #frame-safe,
+      #transition-wipe {
+        position: absolute;
+        pointer-events: none;
+      }
+
+      #grid {
+        inset: 0;
+        z-index: 1;
+        opacity: 0.22;
+        background-image:
+          linear-gradient(rgba(56, 189, 248, 0.2) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(56, 189, 248, 0.2) 1px, transparent 1px);
+        background-size: 72px 72px;
+      }
+
+      #scan {
+        inset: 0;
+        z-index: 2;
+        opacity: 0.18;
+        background: linear-gradient(
+          180deg,
+          transparent 0%,
+          rgba(255, 255, 255, 0.08) 50%,
+          transparent 100%
+        );
+        height: 180px;
+      }
+
+      #brand-bug {
+        top: 72px;
+        left: 120px;
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .bug-mark {
+        width: 52px;
+        height: 52px;
+        display: grid;
+        place-items: center;
+        border: 2px solid #38bdf8;
+        color: #38bdf8;
+        background: rgba(56, 189, 248, 0.1);
+        box-shadow: 0 0 28px rgba(56, 189, 248, 0.35);
+        font-size: 24px;
+        font-weight: 950;
+      }
+
+      #brand-bug span {
+        color: #ffffff;
+        font-size: 62px;
+        line-height: 1;
+        font-weight: 950;
+        letter-spacing: 0;
+        text-shadow: 0 0 28px rgba(56, 189, 248, 0.34);
+      }
+
+      #frame-safe {
+        z-index: 4;
+        inset: 108px 192px;
+        border: 1px solid rgba(56, 189, 248, 0.16);
+      }
+
+      .scene {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        overflow: hidden;
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      #s1 {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .scene-content {
+        position: absolute;
+        inset: 108px 192px 84px;
+        display: grid;
+        gap: 44px;
+        z-index: 12;
+      }
+
+      .label {
+        color: #a3e635;
+        font-family: "JetBrains Mono", "Consolas", monospace;
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: 0.03em;
+      }
+
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+
+      .headline {
+        color: #ffffff;
+        font-size: 86px;
+        line-height: 1.06;
+        font-weight: 950;
+        letter-spacing: 0;
+      }
+
+      .headline .accent-blue {
+        color: #38bdf8;
+        text-shadow: 0 0 30px rgba(56, 189, 248, 0.45);
+      }
+
+      .headline .accent-yellow {
+        color: #facc15;
+        text-shadow: 0 0 30px rgba(250, 204, 21, 0.38);
+      }
+
+      .subline {
+        color: #e5e7eb;
+        font-size: 30px;
+        line-height: 1.45;
+        font-weight: 700;
+      }
+
+      .panel {
+        border: 1px solid rgba(56, 189, 248, 0.25);
+        background: rgba(11, 16, 32, 0.78);
+        box-shadow:
+          0 24px 80px rgba(0, 0, 0, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      .mono {
+        font-family: "JetBrains Mono", "Consolas", monospace;
+      }
+
+      .mini {
+        color: #94a3b8;
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .node {
+        position: absolute;
+        border: 1px solid rgba(56, 189, 248, 0.35);
+        background: rgba(17, 16, 39, 0.92);
+        box-shadow: 0 0 34px rgba(56, 189, 248, 0.22);
+      }
+
+      .node-title {
+        color: #ffffff;
+        font-size: 34px;
+        font-weight: 950;
+      }
+
+      .node-small {
+        color: #a3e635;
+        font-size: 18px;
+        font-weight: 850;
+        letter-spacing: 0.04em;
+      }
+
+      .connector {
+        position: absolute;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, #38bdf8, #a3e635, transparent);
+        box-shadow: 0 0 24px rgba(56, 189, 248, 0.55);
+        transform-origin: left center;
+      }
+
+      #s1 .scene-content {
+        grid-template-columns: 1fr;
+        align-content: end;
+      }
+
+      #s1-stage {
+        position: absolute;
+        left: 260px;
+        top: 170px;
+        width: 1400px;
+        height: 520px;
+      }
+
+      #agent-node {
+        left: 520px;
+        top: 90px;
+        width: 360px;
+        height: 260px;
+        padding: 34px;
+      }
+
+      #obsidian-node {
+        left: 10px;
+        top: 120px;
+        width: 360px;
+        height: 220px;
+        padding: 30px;
+      }
+
+      #github-node {
+        right: 10px;
+        top: 120px;
+        width: 360px;
+        height: 220px;
+        padding: 30px;
+      }
+
+      #conn-left {
+        left: 370px;
+        top: 226px;
+        width: 250px;
+      }
+
+      #conn-right {
+        right: 370px;
+        top: 226px;
+        width: 250px;
+      }
+
+      .graph-dot {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #38bdf8;
+        box-shadow: 0 0 22px #38bdf8;
+      }
+
+      .repo-line {
+        width: 150px;
+        height: 10px;
+        margin-top: 18px;
+        background: linear-gradient(90deg, #38bdf8, rgba(56, 189, 248, 0.1));
+      }
+
+      #s2 .scene-content {
+        align-content: center;
+      }
+
+      .tool-row {
+        display: grid;
+        grid-template-columns: 1fr 120px 1fr 120px 1fr;
+        align-items: center;
+        gap: 18px;
+      }
+
+      .tool-card {
+        height: 350px;
+        padding: 38px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .tool-icon {
+        width: 82px;
+        height: 82px;
+        display: grid;
+        place-items: center;
+        color: #ffffff;
+        border: 2px solid #38bdf8;
+        background: #0f172a;
+        box-shadow: 0 0 28px rgba(56, 189, 248, 0.34);
+        font-size: 42px;
+        font-weight: 950;
+      }
+
+      .tool-name {
+        font-size: 48px;
+        font-weight: 950;
+      }
+
+      .arrow {
+        color: #a3e635;
+        font-size: 78px;
+        font-weight: 950;
+        text-align: center;
+        text-shadow: 0 0 22px rgba(163, 230, 53, 0.5);
+      }
+
+      #s3 .scene-content {
+        grid-template-columns: 610px 1fr;
+        align-items: center;
+      }
+
+      .browser {
+        width: 820px;
+        height: 560px;
+        padding: 28px;
+      }
+
+      .browser-top {
+        display: flex;
+        gap: 12px;
+        height: 48px;
+        align-items: center;
+        border-bottom: 1px solid rgba(229, 231, 235, 0.12);
+        margin-bottom: 34px;
+      }
+
+      .dot {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #fb7185;
+      }
+
+      .dot:nth-child(2) {
+        background: #facc15;
+      }
+
+      .dot:nth-child(3) {
+        background: #a3e635;
+      }
+
+      .download-button {
+        margin-left: auto;
+        width: 220px;
+        height: 58px;
+        display: grid;
+        place-items: center;
+        color: #0b1020;
+        background: #a3e635;
+        font-size: 24px;
+        font-weight: 950;
+        box-shadow: 0 0 36px rgba(163, 230, 53, 0.35);
+      }
+
+      .md-file {
+        height: 360px;
+        padding: 38px;
+        border: 1px solid rgba(163, 230, 53, 0.34);
+        background: rgba(163, 230, 53, 0.08);
+      }
+
+      .code-line {
+        height: 18px;
+        margin: 18px 0;
+        background: linear-gradient(90deg, rgba(56, 189, 248, 0.65), rgba(56, 189, 248, 0.08));
+      }
+
+      #file-fly {
+        width: 420px;
+        height: 250px;
+        padding: 34px;
+        border: 1px solid rgba(56, 189, 248, 0.34);
+        background: rgba(11, 16, 32, 0.9);
+        box-shadow: 0 0 54px rgba(56, 189, 248, 0.2);
+      }
+
+      #s4 .scene-content {
+        grid-template-columns: 560px 1fr;
+        align-items: center;
+      }
+
+      .checklist {
+        display: grid;
+        gap: 24px;
+      }
+
+      .check-row {
+        display: grid;
+        grid-template-columns: 74px 1fr;
+        align-items: center;
+        min-height: 112px;
+        padding: 20px 28px;
+      }
+
+      .check {
+        width: 48px;
+        height: 48px;
+        display: grid;
+        place-items: center;
+        color: #ffffff;
+        border: 2px solid #a3e635;
+        background: #365314;
+        font-size: 28px;
+        font-weight: 950;
+      }
+
+      .check-title {
+        color: #ffffff;
+        font-size: 38px;
+        font-weight: 950;
+      }
+
+      .warning-strip {
+        padding: 30px;
+        border-left: 8px solid #facc15;
+        background: rgba(250, 204, 21, 0.1);
+        color: #facc15;
+        font-size: 36px;
+        font-weight: 950;
+      }
+
+      #s5 .scene-content {
+        align-content: center;
+      }
+
+      .timeline {
+        position: relative;
+        height: 420px;
+        margin-top: 20px;
+      }
+
+      .timeline-line {
+        position: absolute;
+        left: 70px;
+        right: 70px;
+        top: 204px;
+        height: 6px;
+        background: linear-gradient(90deg, #38bdf8, #a3e635, #facc15);
+        box-shadow: 0 0 28px rgba(56, 189, 248, 0.4);
+      }
+
+      .ep-card {
+        position: absolute;
+        top: 92px;
+        width: 330px;
+        height: 240px;
+        padding: 28px;
+      }
+
+      .ep-card:nth-child(2) {
+        left: 0;
+      }
+
+      .ep-card:nth-child(3) {
+        left: 400px;
+      }
+
+      .ep-card:nth-child(4) {
+        left: 800px;
+      }
+
+      .ep-card:nth-child(5) {
+        left: 1200px;
+      }
+
+      .ep-num {
+        color: #38bdf8;
+        font-family: "JetBrains Mono", "Consolas", monospace;
+        font-size: 28px;
+        font-weight: 950;
+      }
+
+      .ep-title {
+        margin-top: 18px;
+        color: #ffffff;
+        font-size: 36px;
+        line-height: 1.16;
+        font-weight: 950;
+      }
+
+      .current {
+        border-color: rgba(250, 204, 21, 0.62);
+        box-shadow: 0 0 46px rgba(250, 204, 21, 0.2);
+      }
+
+      .current .ep-num {
+        color: #facc15;
+      }
+
+      #transition-wipe {
+        top: 0;
+        left: -2160px;
+        z-index: 200;
+        width: 2160px;
+        height: 1080px;
+        background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.85), rgba(163, 230, 53, 0.72), transparent);
+        transform: skewX(-12deg);
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="50.4"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div id="grid" data-layout-ignore="true"></div>
+      <div id="scan" data-layout-ignore="true"></div>
+      <div id="frame-safe" data-layout-ignore="true"></div>
+      <div id="brand-bug" data-layout-ignore="true">
+        <div class="bug-mark">剛</div>
+        <span>剛來學</span>
+      </div>
+
+      <section
+        id="s1"
+        class="scene clip"
+        data-start="0"
+        data-duration="7.52"
+        data-track-index="1"
+        data-broll-id="BROLL_01"
+        data-source-start="00:00:00,000"
+        data-source-end="00:00:07,520"
+      >
+        <div id="s1-stage">
+          <div id="obsidian-node" class="node">
+            <div class="node-small">SECOND BRAIN</div>
+            <div class="node-title">Obsidian</div>
+            <div class="graph-dot" style="left: 56px; top: 142px"></div>
+            <div class="graph-dot" style="left: 154px; top: 118px"></div>
+            <div class="graph-dot" style="left: 246px; top: 158px"></div>
+          </div>
+          <div id="agent-node" class="node">
+            <div class="node-small">AI AGENT</div>
+            <div class="node-title">Codex</div>
+            <div class="repo-line"></div>
+            <div class="repo-line" style="width: 240px"></div>
+            <div class="repo-line" style="width: 184px"></div>
+          </div>
+          <div id="github-node" class="node">
+            <div class="node-small">CODE REPO</div>
+            <div class="node-title">GitHub</div>
+            <div class="repo-line"></div>
+            <div class="repo-line" style="width: 260px"></div>
+            <div class="repo-line" style="width: 206px"></div>
+          </div>
+          <div id="conn-left" class="connector"></div>
+          <div id="conn-right" class="connector"></div>
+        </div>
+        <div class="scene-content">
+          <div>
+            <div class="label">BROLL_01 / EP03 OPENING</div>
+            <h1 class="headline">Agent 接上<br /><span class="accent-blue">第二大腦</span>與<span class="accent-yellow">程式倉庫</span></h1>
+            <p class="subline">不是單次聊天，是把工具接成可執行的工作系統。</p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="s2"
+        class="scene clip"
+        data-start="8.18"
+        data-duration="7.92"
+        data-track-index="1"
+        data-broll-id="BROLL_02"
+        data-source-start="00:00:08,180"
+        data-source-end="00:00:16,100"
+      >
+        <div class="scene-content">
+          <div>
+            <div class="label">BROLL_02 / TOOL STACK</div>
+            <h2 class="headline">三個工具<br /><span class="accent-blue">接起來才有用</span></h2>
+          </div>
+          <div class="tool-row">
+            <div class="tool-card panel">
+              <div class="tool-icon">O</div>
+              <div>
+                <div class="tool-name">Obsidian</div>
+                <div class="mini">知識庫 / 第二大腦</div>
+              </div>
+            </div>
+            <div class="arrow">></div>
+            <div class="tool-card panel">
+              <div class="tool-icon">G</div>
+              <div>
+                <div class="tool-name">GitHub</div>
+                <div class="mini">版本 / 程式倉庫</div>
+              </div>
+            </div>
+            <div class="arrow">></div>
+            <div class="tool-card panel">
+              <div class="tool-icon">C</div>
+              <div>
+                <div class="tool-name">Codex 2.5</div>
+                <div class="mini">Markdown 懶人包</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="s3"
+        class="scene clip"
+        data-start="16.1"
+        data-duration="6.72"
+        data-track-index="1"
+        data-broll-id="BROLL_03"
+        data-source-start="00:00:16,100"
+        data-source-end="00:00:22,820"
+      >
+        <div class="scene-content">
+          <div>
+            <div class="label">BROLL_03 / DOWNLOAD FLOW</div>
+            <h2 class="headline">先下載<br /><span class="accent-yellow">Markdown 懶人包</span></h2>
+            <p class="subline">把教學流程變成 Agent 可以讀的規格。</p>
+          </div>
+          <div class="browser panel">
+            <div class="browser-top">
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="download-button">Download</div>
+            </div>
+            <div class="md-file">
+              <div class="node-small">FILE READY</div>
+              <div class="node-title mono">Codex lazy pack 2.5.md</div>
+              <div class="code-line"></div>
+              <div class="code-line" style="width: 72%"></div>
+              <div class="code-line" style="width: 86%"></div>
+            </div>
+          </div>
+        </div>
+        <div id="file-fly" class="mono">
+          <div class="node-small">MARKDOWN</div>
+          <div class="node-title" style="font-size: 32px">lazy-pack.md</div>
+          <div class="code-line"></div>
+          <div class="code-line" style="width: 66%"></div>
+        </div>
+      </section>
+
+      <section
+        id="s4"
+        class="scene clip"
+        data-start="22.82"
+        data-duration="9.36"
+        data-track-index="1"
+        data-broll-id="BROLL_04"
+        data-source-start="00:00:22,820"
+        data-source-end="00:00:32,180"
+      >
+        <div class="scene-content">
+          <div>
+            <div class="label">BROLL_04 / CHECKLIST</div>
+            <h2 class="headline">前置條件<br /><span class="accent-yellow">先確認</span></h2>
+            <div class="warning-strip">少一個，後面就會卡住。</div>
+          </div>
+          <div class="checklist">
+            <div class="check-row panel">
+              <div class="check">✓</div>
+              <div>
+                <div class="check-title">準備 Codex</div>
+                <div class="mini">Agent 可以執行任務</div>
+              </div>
+            </div>
+            <div class="check-row panel">
+              <div class="check">✓</div>
+              <div>
+                <div class="check-title">安裝 Obsidian</div>
+                <div class="mini">建立你的第二大腦</div>
+              </div>
+            </div>
+            <div class="check-row panel">
+              <div class="check">✓</div>
+              <div>
+                <div class="check-title">註冊 GitHub</div>
+                <div class="mini">接上程式倉庫</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="s5"
+        class="scene clip"
+        data-start="32.18"
+        data-duration="18.22"
+        data-track-index="1"
+        data-broll-id="BROLL_05"
+        data-source-start="00:00:32,180"
+        data-source-end="00:00:50,400"
+      >
+        <div class="scene-content">
+          <div>
+            <div class="label">BROLL_05 / LEARNING ROADMAP</div>
+            <h2 class="headline">這集不是單點教學<br /><span class="accent-blue">是整條路線圖</span></h2>
+          </div>
+          <div class="timeline">
+            <div class="timeline-line"></div>
+            <div class="ep-card panel current">
+              <div class="ep-num">EP03</div>
+              <div class="ep-title">接上第二大腦與倉庫</div>
+              <div class="mini">現在這集</div>
+            </div>
+            <div class="ep-card panel">
+              <div class="ep-num">EP05</div>
+              <div class="ep-title">GitHub 註冊</div>
+              <div class="mini">帳號與倉庫</div>
+            </div>
+            <div class="ep-card panel">
+              <div class="ep-num">EP07</div>
+              <div class="ep-title">Obsidian 安裝</div>
+              <div class="mini">建立知識庫</div>
+            </div>
+            <div class="ep-card panel">
+              <div class="ep-num">EP08</div>
+              <div class="ep-title">Obsidian 使用</div>
+              <div class="mini">工作流實作</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div id="transition-wipe" data-layout-ignore="true"></div>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({
+        paused: true,
+        defaults: { ease: "power3.out" },
+      });
+
+      const sceneIds = ["#s1", "#s2", "#s3", "#s4", "#s5"];
+      tl.set(sceneIds, { autoAlpha: 0 }, 0);
+      tl.set("#s1", { autoAlpha: 1 }, 0);
+      tl.set("#scan", { y: -220 }, 0);
+      tl.set("#s1 .scene-content, #s1 .node, #s1 .connector", { opacity: 1 }, 0);
+      tl.from("#brand-bug", { opacity: 0, y: -18, duration: 0.35 }, 0);
+      tl.from("#s1 .node", { opacity: 0, y: 28, scale: 0.94, stagger: 0.12, duration: 0.75 }, 0.18);
+      tl.from("#s1 .connector", { opacity: 0, scaleX: 0, stagger: 0.12, duration: 0.55 }, 0.68);
+      tl.from("#s1 .label", { opacity: 0, x: -36, duration: 0.35 }, 0.92);
+      tl.from("#s1 .headline", { opacity: 0, y: 42, scale: 0.97, duration: 0.55 }, 1.06);
+      tl.from("#s1 .subline", { opacity: 0, y: 20, duration: 0.35 }, 1.58);
+      tl.to("#agent-node", { scale: 1.035, duration: 0.55, yoyo: true, repeat: 3 }, 2.2);
+
+      tl.set("#s1", { autoAlpha: 0 }, 8.12);
+      tl.set("#s2", { autoAlpha: 1 }, 8.18);
+      tl.from("#s2 .label", { opacity: 0, x: -34, duration: 0.3 }, 8.22);
+      tl.from("#s2 .headline", { opacity: 0, y: 34, duration: 0.45 }, 8.36);
+      tl.from("#s2 .tool-card", { opacity: 0, y: 44, scale: 0.95, stagger: 0.22, duration: 0.55 }, 8.95);
+      tl.from("#s2 .arrow", { opacity: 0, scaleX: 0, stagger: 0.22, duration: 0.35 }, 9.38);
+      tl.to("#s2 .tool-icon", { y: -8, duration: 0.45, yoyo: true, repeat: 5, stagger: 0.12 }, 10.5);
+
+      tl.set("#s2", { autoAlpha: 0 }, 16.08);
+      tl.set("#s3", { autoAlpha: 1 }, 16.1);
+      tl.from("#s3 .label", { opacity: 0, x: -34, duration: 0.28 }, 16.14);
+      tl.from("#s3 .headline", { opacity: 0, y: 34, duration: 0.42 }, 16.28);
+      tl.from("#s3 .subline", { opacity: 0, y: 22, duration: 0.32 }, 16.72);
+      tl.from("#s3 .browser", { opacity: 0, x: 60, scale: 0.96, duration: 0.52 }, 16.45);
+      tl.from("#s3 .download-button", { scale: 0.88, boxShadow: "0 0 0 rgba(163,230,53,0)", duration: 0.42 }, 17.05);
+      tl.fromTo("#file-fly", { opacity: 0, x: 1180, y: 160, scale: 0.82 }, { opacity: 1, x: 1230, y: 628, scale: 1, duration: 0.78 }, 17.38);
+
+      tl.set("#s3", { autoAlpha: 0 }, 22.8);
+      tl.set("#s4", { autoAlpha: 1 }, 22.82);
+      tl.from("#s4 .label", { opacity: 0, x: -34, duration: 0.28 }, 22.86);
+      tl.from("#s4 .headline", { opacity: 0, y: 34, duration: 0.42 }, 23.0);
+      tl.from("#s4 .warning-strip", { opacity: 0, x: -34, duration: 0.35 }, 23.48);
+      tl.from("#s4 .check-row", { opacity: 0, x: 58, stagger: 0.22, duration: 0.5 }, 23.4);
+      tl.from("#s4 .check", { scale: 0, stagger: 0.22, duration: 0.34, ease: "back.out(1.8)" }, 23.62);
+
+      tl.set("#s4", { autoAlpha: 0 }, 32.16);
+      tl.set("#s5", { autoAlpha: 1 }, 32.18);
+      tl.from("#s5 .label", { opacity: 0, x: -34, duration: 0.28 }, 32.22);
+      tl.from("#s5 .headline", { opacity: 0, y: 34, duration: 0.45 }, 32.36);
+      tl.from(".timeline-line", { scaleX: 0, transformOrigin: "left center", duration: 0.9 }, 33.1);
+      tl.from("#s5 .ep-card", { opacity: 0, y: 50, scale: 0.95, stagger: 0.26, duration: 0.52 }, 33.35);
+      tl.to("#s5 .current", { scale: 1.04, duration: 0.5, yoyo: true, repeat: 4 }, 35.2);
+
+      [7.7, 15.78, 22.52, 31.9].forEach((time) => {
+        tl.fromTo(
+          "#transition-wipe",
+          { x: 0 },
+          { x: 4320, duration: 0.55, ease: "power2.inOut" },
+          time,
+        );
+      });
+
+      tl.to("#scan", { y: 1180, duration: 49.8, ease: "none" }, 0);
+      tl.to({}, { duration: 0.01 }, 50.4);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>

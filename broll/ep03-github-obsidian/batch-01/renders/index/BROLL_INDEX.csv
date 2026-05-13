@@ -1,0 +1,6 @@
+﻿"id","source_start","source_end","render_start","render_end","duration_seconds","type","title","output_file","editor_note"
+"BROLL_01","00:00:00,000","00:00:07,520","00:00:00,000","00:00:07,520","7.52","混合","EP03 主題開場：Agent 接上第二大腦與程式倉庫","BROLL_01_000000-000752_navy-central-agent-terminal.mp4","Import BROLL_MARKERS.srt, then align this clip to marker BROLL_01."
+"BROLL_02","00:00:08,180","00:00:16,100","00:00:08,180","00:00:16,100","7.92","工具介面動畫","Obsidian、GitHub、Codex 懶人包 2.5 三工具介紹","BROLL_02_000818-001610_three-large-tool-cards.mp4","Import BROLL_MARKERS.srt, then align this clip to marker BROLL_02."
+"BROLL_03","00:00:16,100","00:00:22,820","00:00:16,100","00:00:22,820","6.72","文件流程","下載 Markdown 懶人包","BROLL_03_001610-002282_screen-style-browser-top-right-download.mp4","Import BROLL_MARKERS.srt, then align this clip to marker BROLL_03."
+"BROLL_04","00:00:22,820","00:00:32,180","00:00:22,820","00:00:32,180","9.36","資訊圖解","前置條件 Checklist","BROLL_04_002282-003218_checklist-infographic-navy-grid.mp4","Import BROLL_MARKERS.srt, then align this clip to marker BROLL_04."
+"BROLL_05","00:00:32,180","00:00:50,400","00:00:32,180","00:00:50,400","18.22","資訊圖解","前集學習路線圖","BROLL_05_003218-005040_learning-path-timeline-youtube.mp4","Import BROLL_MARKERS.srt, then align this clip to marker BROLL_05."

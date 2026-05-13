@@ -1,0 +1,14 @@
+# Local preview logs and temporary contact-sheet inputs
+preview.out.log
+preview.err.log
+contact-sheet-input.txt
+thumbs/
+
+# Rendered media can be regenerated and may be large.
+renders/full/*.mp4
+renders/clips/*.mp4
+renders/index/BROLL_CONTACT_SHEET.jpg
+
+# Common dependency folders
+node_modules/
+.npm-cache/

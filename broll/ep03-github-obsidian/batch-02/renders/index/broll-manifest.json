@@ -1,0 +1,80 @@
+﻿{
+    "project":  "EP03 GitHub Obsidian",
+    "batch":  "BROLL_BATCH_02",
+    "editor_targets":  [
+                           "CapCut",
+                           "Filmora"
+                       ],
+    "canvas":  "1920x1080",
+    "fps":  30,
+    "default_handle_seconds":  0.3,
+    "full_render":  "../full/BROLL_BATCH_02_FULL.mp4",
+    "clips_dir":  "../clips",
+    "segments":  [
+                     {
+                         "id":  "BROLL_06",
+                         "source_start":  "00:00:59,820",
+                         "source_end":  "00:01:14,620",
+                         "render_start":  "00:00:00,000",
+                         "render_end":  "00:00:14,800",
+                         "duration_seconds":  14.8,
+                         "type":  "工具介面動畫",
+                         "title":  "Codex 新專案與重新命名",
+                         "slug":  "app-interface-mockup-codex",
+                         "source_srt":  "新增一個專案／從零開始／重新命名專案 GitHub 跟 Obsidian",
+                         "output_file":  "BROLL_06_005982-011462_app-interface-mockup-codex.mp4"
+                     },
+                     {
+                         "id":  "BROLL_07",
+                         "source_start":  "00:01:18,580",
+                         "source_end":  "00:01:33,600",
+                         "render_start":  "00:00:14,800",
+                         "render_end":  "00:00:29,820",
+                         "duration_seconds":  15.02,
+                         "type":  "文件流程",
+                         "title":  "Markdown 拖進 Codex 對話視窗",
+                         "slug":  "instructional-markdown-document-dragged",
+                         "source_srt":  "找到資料夾／把 markdown 拖拉到對話視窗／提交",
+                         "output_file":  "BROLL_07_011858-013360_instructional-markdown-document-dragged.mp4"
+                     },
+                     {
+                         "id":  "BROLL_08",
+                         "source_start":  "00:01:39,340",
+                         "source_end":  "00:01:58,220",
+                         "render_start":  "00:00:29,820",
+                         "render_end":  "00:00:48,700",
+                         "duration_seconds":  18.88,
+                         "type":  "混合",
+                         "title":  "GitHub CLI 與 Obsidian MCP Vault 雙支線",
+                         "slug":  "split-diagram-left-branch",
+                         "source_srt":  "GitHub 外掛已裝／現在要裝 GitHub CLI／Obsidian MCP Vault",
+                         "output_file":  "BROLL_08_013934-015822_split-diagram-left-branch.mp4"
+                     },
+                     {
+                         "id":  "BROLL_09",
+                         "source_start":  "00:02:04,740",
+                         "source_end":  "00:02:24,020",
+                         "render_start":  "00:00:48,700",
+                         "render_end":  "00:01:07,980",
+                         "duration_seconds":  19.28,
+                         "type":  "資訊圖解",
+                         "title":  "人類登入驗證 vs Codex 自動安裝",
+                         "slug":  "comparison-infographic-left-column",
+                         "source_srt":  "安裝過程像 Cloud AI 基本功／有問題問 Codex／該登錄收 Mail 填認證碼",
+                         "output_file":  "BROLL_09_020474-022402_comparison-infographic-left-column.mp4"
+                     },
+                     {
+                         "id":  "BROLL_10",
+                         "source_start":  "00:02:54,380",
+                         "source_end":  "00:03:17,120",
+                         "render_start":  "00:01:07,980",
+                         "render_end":  "00:01:30,720",
+                         "duration_seconds":  22.74,
+                         "type":  "工具介面動畫",
+                         "title":  "Obsidian MCP Vault 連接流程",
+                         "slug":  "cloud-drive-connects-obsidian",
+                         "source_srt":  "Obsidian 自動找雲端硬碟／裝 MCP Vault／開瀏覽器登入／這部分一定要人類做",
+                         "output_file":  "BROLL_10_025438-031712_cloud-drive-connects-obsidian.mp4"
+                     }
+                 ]
+}
